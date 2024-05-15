@@ -1,9 +1,10 @@
 <script setup>
-import TheWelcome from "../components/TheWelcome.vue";
+
+import WebtoonList from "@/components/webtoons/WebtoonList.vue";
 </script>
 
 <template>
     <main>
-        <TheWelcome />
+        <WebtoonList/>
     </main>
 </template>

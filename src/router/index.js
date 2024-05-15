@@ -1,5 +1,9 @@
 import {createRouter, createWebHistory} from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import ApiUrlView from "@/views/ApiUrlView.vue";
+import EpisodesView from "@/views/EpisodesView.vue";
+import EpisodeView from "@/views/EpisodeView.vue";
+import {apiUrlRequiredMiddleware, missingApiUrlRequired} from "@/middlewares/api-url.middleware.js";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,15 +11,26 @@ const router = createRouter({
         {
             path: "/",
             name: "home",
-            component: HomeView
+            component: HomeView,
+            beforeEnter: apiUrlRequiredMiddleware
         },
         {
-            path: "/about",
-            name: "about",
-            // route level code-splitting
-            // this generates a separate chunk (About.[hash].js) for this route
-            // which is lazy-loaded when the route is visited.
-            component: () => import("../views/AboutView.vue")
+            path: "/apiurl",
+            name: "apiurl",
+            component: ApiUrlView,
+            beforeEnter: missingApiUrlRequired
+        },
+        {
+            path: "/episodes/:webtoonId",
+            name: "episodes",
+            component: EpisodesView,
+            beforeEnter: apiUrlRequiredMiddleware
+        },
+        {
+            path: "/episode/:episodeId",
+            name: "episode",
+            component: EpisodeView,
+            beforeEnter: apiUrlRequiredMiddleware
         }
     ]
 });
