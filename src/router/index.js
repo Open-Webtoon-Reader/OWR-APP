@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from "vue-router";
+import {createRouter, createWebHashHistory} from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import ApiUrlView from "@/views/ApiUrlView.vue";
 import EpisodesView from "@/views/EpisodesView.vue";
@@ -6,7 +6,7 @@ import EpisodeView from "@/views/EpisodeView.vue";
 import {apiUrlRequiredMiddleware, missingApiUrlRequired} from "@/middlewares/api-url.middleware.js";
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
+    history: createWebHashHistory(import.meta.env.BASE_URL),
     routes: [
         {
             path: "/",

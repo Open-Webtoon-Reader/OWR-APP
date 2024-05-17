@@ -11,6 +11,7 @@ async function testApiUrl(apiUrl){
             return false;
         }
     }catch (e){
+        alert(e);
         return false;
     }
 }
