@@ -1,10 +1,6 @@
 <script setup>
 import {ref, onMounted, onUnmounted} from "vue";
 
-const props = defineProps({
-    chunkNumber: Number,
-});
-
 const emit = defineEmits(["on-display"]);
 
 const myElement = ref(null);
@@ -14,7 +10,7 @@ function handleIntersect(entries){
     entries.forEach(entry => {
         if (entry.isIntersecting && !hasIntersected){
             hasIntersected = true;  // Marquer comme intersecté
-            emit("on-display", props.chunkNumber);
+            emit("on-display");
             if (observer && myElement.value){
                 observer.unobserve(myElement.value);  // Arrêter d'observer après la première intersection
             }

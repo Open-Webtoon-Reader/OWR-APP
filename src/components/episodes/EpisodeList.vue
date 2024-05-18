@@ -32,7 +32,7 @@ async function loadMore(){
         </header>
         <div class="episodes-container">
             <div v-for="episode in episodes" :key="episode.id">
-                <EpisodeItem :episode="episode" v-if="episode.id !== episodes.length - 1"/>
+                <EpisodeItem :episode="episode" v-if="episodes.indexOf(episode) !== episodes.length - 1"/>
                 <ObserverComponent v-else @on-display="loadMore">
                     <EpisodeItem :episode="episode"/>
                 </ObserverComponent>
