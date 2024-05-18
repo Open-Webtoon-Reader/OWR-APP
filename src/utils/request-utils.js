@@ -34,9 +34,9 @@ async function getWebtoon(webtoonId){
     }
 }
 
-async function getEpisodes(webtoonId){
+async function getEpisodes(webtoonId, chunkNumber){
     try{
-        const response = await axios.get(`/webtoons/${webtoonId}/episodes`);
+        const response = await axios.get(`/webtoons/${webtoonId}/episodes?chunk=${chunkNumber}`);
         return response.data;
     }catch (e){
         return [];
@@ -70,5 +70,5 @@ export {
     getEpisodeImages
 };
 
-export class getEpisodeImage {
+export class getEpisodeImage{
 }
