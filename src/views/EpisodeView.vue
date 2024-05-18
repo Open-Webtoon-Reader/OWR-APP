@@ -1,7 +1,7 @@
 <script setup>
 
 import {onMounted, ref} from "vue";
-import {getEpisode} from "@/utils/request-utils.js";
+import {getEpisode, getEpisodeImages} from "@/utils/request-utils.js";
 import {useRoute} from "vue-router";
 
 const route = useRoute();
@@ -11,7 +11,7 @@ const images = ref([]);
 
 onMounted(async() => {
     episode.value = await getEpisode(episodeId);
-    images.value = episode.value.images;
+    images.value = await getEpisodeImages(episodeId);
 });
 </script>
 

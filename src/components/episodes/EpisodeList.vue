@@ -1,7 +1,7 @@
 <script setup>
 
 import {onMounted, ref} from "vue";
-import {getEpisodes} from "@/utils/request-utils.js";
+import {getEpisodes, getWebtoon} from "@/utils/request-utils.js";
 import {useRoute} from "vue-router";
 import EpisodeItem from "@/components/episodes/EpisodeItem.vue";
 
@@ -11,8 +11,8 @@ const webtoonInfos = ref({});
 const episodes = ref([]);
 
 onMounted(async() => {
-    webtoonInfos.value = await getEpisodes(webtoonId);
-    episodes.value = webtoonInfos.value.episodes;
+    webtoonInfos.value = await getWebtoon(webtoonId);
+    episodes.value = await getEpisodes(webtoonId);
 });
 </script>
 

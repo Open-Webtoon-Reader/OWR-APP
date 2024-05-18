@@ -25,6 +25,15 @@ async function getWebtoons(){
     }
 }
 
+async function getWebtoon(webtoonId){
+    try{
+        const response = await axios.get(`/webtoons/${webtoonId}`);
+        return response.data;
+    }catch (e){
+        return null;
+    }
+}
+
 async function getEpisodes(webtoonId){
     try{
         const response = await axios.get(`/webtoons/${webtoonId}/episodes`);
@@ -36,12 +45,30 @@ async function getEpisodes(webtoonId){
 
 async function getEpisode(episodeId){
     try{
+        const response = await axios.get(`/webtoons/episodes/${episodeId}`);
+        return response.data;
+    }catch (e){
+        return null;
+    }
+}
+
+async function getEpisodeImages(episodeId){
+    try{
         const response = await axios.get(`/webtoons/episodes/${episodeId}/images`);
         return response.data;
     }catch (e){
         return null;
     }
-
 }
 
-export {testApiUrl, getWebtoons, getEpisodes, getEpisode};
+export {
+    testApiUrl,
+    getWebtoons,
+    getWebtoon,
+    getEpisodes,
+    getEpisode,
+    getEpisodeImages
+};
+
+export class getEpisodeImage {
+}
