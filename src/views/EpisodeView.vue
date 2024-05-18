@@ -16,12 +16,26 @@ onMounted(async() => {
 </script>
 
 <template>
-    <h1>{{episode.title}}</h1>
-    <div v-for="image in images" :key="image.id">
-        <img :src="image" alt="episode image"/>
+    <div class="episode-content">
+        <h1 class="episode-title">{{episode.title}}</h1>
+        <div v-for="image in images" :key="image.id" class="episode-images">
+            <img :src="image" alt="episode image"/>
+        </div>
     </div>
 </template>
 
 <style scoped>
+.episode-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
+    &>.episode-title{
+        padding: 1rem 0;
+        text-align: center;
+    }
+}
+.episode-images{
+    max-width: 40rem;
+}
 </style>
