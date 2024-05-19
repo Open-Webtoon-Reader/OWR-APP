@@ -4,7 +4,7 @@ import {onMounted, ref} from "vue";
 import {getEpisodes, getWebtoon} from "@/utils/request-utils.js";
 import {useRoute} from "vue-router";
 import EpisodeItem from "@/components/episodes/EpisodeItem.vue";
-import ObserverComponent from "@/components/ChunkDetector.vue";
+import ChunkDetector from "@/components/ChunkDetector.vue";
 
 const route = useRoute();
 const webtoonId = route.params.webtoonId;
@@ -32,10 +32,10 @@ async function loadMore(){
         </header>
         <div class="episodes-container">
             <div v-for="episode in episodes" :key="episode.id">
-                <EpisodeItem :episode="episode" v-if="episodes.indexOf(episode) !== episodes.length - 11"/>
-                <ObserverComponent v-else @on-display="loadMore">
+                <EpisodeItem :episode="episode" v-if="episodes.indexOf(episode) !== episodes.length - 8"/>
+                <ChunkDetector v-else @on-display="loadMore">
                     <EpisodeItem :episode="episode"/>
-                </ObserverComponent>
+                </ChunkDetector>
             </div>
         </div>
     </div>

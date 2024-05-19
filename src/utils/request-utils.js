@@ -52,9 +52,9 @@ async function getEpisode(episodeId){
     }
 }
 
-async function getEpisodeImages(episodeId){
+async function getEpisodeImages(episodeId, chunkNumber){
     try{
-        const response = await axios.get(`/webtoons/episodes/${episodeId}/images`);
+        const response = await axios.get(`/webtoons/episodes/${episodeId}/images?chunk=${chunkNumber}`);
         return response.data;
     }catch (e){
         return null;
