@@ -27,7 +27,7 @@ async function loadMore(){
     <div class="episode-content">
         <h1 class="episode-title">{{episode.title}}</h1>
         <div v-for="image in images" :key="image.id" class="episode-images">
-            <img :src="image" alt="episode image" v-if="images.indexOf(image) !== images.length - 8"/>
+            <img :src="image" alt="episode image" v-if="images.indexOf(image) !== images.length - 1"/>
             <ChunkDetector @on-display="loadMore" v-else>
                 <img :src="image" alt="episode image"/>
             </ChunkDetector>

@@ -28,7 +28,7 @@ async function loadMore(){
     <div class="episode-list">
         <div class="episodes-container">
             <div v-for="episode in episodes" :key="episode.id">
-                <EpisodeItem :episode="episode" v-if="episodes.indexOf(episode) !== episodes.length - 8"/>
+                <EpisodeItem :episode="episode" v-if="episodes.indexOf(episode) !== episodes.length - 1"/>
                 <ChunkDetector v-else @on-display="loadMore">
                     <EpisodeItem :episode="episode"/>
                 </ChunkDetector>
