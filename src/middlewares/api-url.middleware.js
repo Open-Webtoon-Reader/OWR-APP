@@ -1,8 +1,8 @@
 import {testApiUrl} from "@/utils/request-utils.js";
-import {getCookie} from "@/utils/data-utils.js";
+import {getFromLocalStorage} from "@/utils/data-utils.js";
 
 export async function apiUrlRequiredMiddleware(to, from, next){
-    const apiUrl = getCookie("apiurl");
+    const apiUrl = getFromLocalStorage("apiurl");
     if(apiUrl){
         const response = await testApiUrl(apiUrl);
         if(response)
@@ -14,7 +14,7 @@ export async function apiUrlRequiredMiddleware(to, from, next){
 }
 
 export async function missingApiUrlRequired(to, from, next){
-    const apiUrl = getCookie("apiurl");
+    const apiUrl = getFromLocalStorage("apiurl");
     if(apiUrl){
         const response = await testApiUrl(apiUrl);
         if(response)

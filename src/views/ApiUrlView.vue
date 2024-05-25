@@ -1,7 +1,7 @@
 <script setup>
 import router from "@/router/index.js";
 import {ref} from "vue";
-import {saveCookie} from "@/utils/data-utils.js";
+import {saveToLocalStorage} from "@/utils/data-utils.js";
 import {testApiUrl} from "@/utils/request-utils.js";
 
 const apiUrlRef = ref("http://localhost:3000");
@@ -10,7 +10,7 @@ const loadingRef = ref(false);
 async function submitNewApiUrl(){
     loadingRef.value = true;
     if(await testApiUrl(apiUrlRef.value)){
-        saveCookie("apiurl", apiUrlRef.value);
+        saveToLocalStorage("apiurl", apiUrlRef.value);
         await router.push({name: "home"});
     }else{
         alert("Invalid API URL");
