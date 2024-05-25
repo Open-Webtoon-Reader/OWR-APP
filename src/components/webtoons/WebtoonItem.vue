@@ -17,11 +17,16 @@ function onClick(){
     <div class="webtoon-item" @click="onClick">
         <img :src="webtoon.thumbnail" alt="Webtoon thumbnail"/>
         <div class="webtoon-details">
-            <div class="">
+            <div class="webtoon-infos">
                 <h2>{{webtoon.title}}</h2>
                 <p>{{webtoon.author}}</p>
+                <p class="webtoon-language">{{webtoon.language.toUpperCase()}}</p>
             </div>
-            <p>{{webtoon.language.toUpperCase()}}</p>
+            <div class="webtoon-extended-infos">
+                <div v-for="genre in webtoon.genres" :key="webtoon.genres.indexOf(genre)" class="genre-item">
+                    <p>{{genre}}</p>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -70,5 +75,29 @@ function onClick(){
     width: 100%;
     padding-left: 1rem;
     padding-right: 1rem;
+
+    &>.webtoon-infos{
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        &>.webtoon-language{
+            font-size: 0.9rem;
+        }
+    }
 }
+
+.webtoon-extended-infos{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: right;
+    gap: 1rem;
+
+    &>.genre-item{
+        text-align: right;
+        font-style: italic;
+    }
+}
+
 </style>
