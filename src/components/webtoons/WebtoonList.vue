@@ -12,11 +12,39 @@ onMounted(async() => {
 </script>
 
 <template>
-    <div v-for="webtoon in webtoons" :key="webtoon.id">
-        <WebtoonItem :webtoon="webtoon"/>
+    <div class="webtoon-list">
+        <div class="webtoons-container">
+            <div v-for="webtoon in webtoons" :key="webtoon.id">
+                <WebtoonItem :webtoon="webtoon"/>
+            </div>
+        </div>
     </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.webtoon-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 
+    background-color: #0F0F0F;
+}
+
+.webtoons-container {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    gap: 1rem;
+
+    width: 100%;
+    max-width: 50rem;
+
+    padding: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 1rem;
+
+    background-color: #171717;
+}
 </style>

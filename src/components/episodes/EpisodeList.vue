@@ -1,38 +1,34 @@
 <script setup>
-
 import {onMounted, ref} from "vue";
-import {getEpisodes, getWebtoon} from "@/utils/request-utils.js";
-import {useRoute} from "vue-router";
+import {getEpisodes} from "@/utils/request-utils.js";
 import EpisodeItem from "@/components/episodes/EpisodeItem.vue";
 import ChunkDetector from "@/components/ChunkDetector.vue";
 
-const route = useRoute();
-const webtoonId = route.params.webtoonId;
-const webtoonInfos = ref({});
+const props = defineProps({
+    webtoonId: {
+        type: String,
+        required: true
+    }
+});
+
 const episodes = ref([]);
 const currentChunk = ref(0);
 
 onMounted(async() => {
-    webtoonInfos.value = await getWebtoon(webtoonId);
     await loadMore();
 });
 
 async function loadMore(){
     currentChunk.value++;
-    episodes.value = episodes.value.concat((await getEpisodes(webtoonId, currentChunk.value)).episodes);
+    episodes.value = episodes.value.concat((await getEpisodes(props.webtoonId, currentChunk.value)).episodes);
 }
 </script>
 
 <template>
-    <div class="episode-list" v-if="webtoonInfos.title">
-        <header class="episodes-header">
-            <h1 class="banner-title">{{webtoonInfos.title}}</h1>
-            <img :src="webtoonInfos.backgroundBanner" alt="thumbnail" class="banner-background"/>
-            <img :src="webtoonInfos.topBanner" alt="thumbnail" class="banner-top"/>
-        </header>
+    <div class="episode-list">
         <div class="episodes-container">
             <div v-for="episode in episodes" :key="episode.id">
-                <EpisodeItem :episode="episode" v-if="episodes.indexOf(episode) !== episodes.length - 8"/>
+                <EpisodeItem :episode="episode" v-if="episodes.indexOf(episode) !== episodes.length - 1"/>
                 <ChunkDetector v-else @on-display="loadMore">
                     <EpisodeItem :episode="episode"/>
                 </ChunkDetector>
@@ -41,45 +37,17 @@ async function loadMore(){
     </div>
 </template>
 
-<style>
-
-.episode-list{
+<style scoped lang="scss">
+.episode-list {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+
     background-color: #0F0F0F;
 }
 
-.episodes-header {
-    position: relative;
-    text-align: center;
-}
-
-.banner-title {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    color: black;
-}
-
-.banner-background {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-.banner-top {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    z-index: 0;
-}
-
-.episodes-container{
+.episodes-container {
     display: flex;
     flex-direction: column;
     align-self: center;
