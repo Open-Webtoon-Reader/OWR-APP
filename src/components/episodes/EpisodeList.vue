@@ -37,7 +37,7 @@ async function loadMore(){
     </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .episode-list {
     display: flex;
     flex-direction: column;

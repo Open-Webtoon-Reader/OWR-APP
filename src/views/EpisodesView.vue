@@ -15,22 +15,24 @@ onMounted(async() => {
 
 <template>
     <div v-if="webtoonInfos.title">
-        <header class="episodes-header">
-            <h1 class="banner-title">{{webtoonInfos.title}}</h1>
-            <img :src="webtoonInfos.backgroundBanner" alt="thumbnail" class="banner-background"/>
-            <img :src="webtoonInfos.topBanner" alt="thumbnail" class="banner-top"/>
+        <header>
+            <h1>{{ webtoonInfos.title }}</h1>
+            <img :src="webtoonInfos.backgroundBanner" alt="thumbnail" class="banner-background" />
+            <img :src="webtoonInfos.topBanner" alt="thumbnail" class="banner-top" />
         </header>
-        <EpisodeList :webtoonId="webtoonId"/>
+        <EpisodeList :webtoonId="webtoonId" />
     </div>
 </template>
 
 <style scoped>
-.episodes-header {
+header {
     position: relative;
     text-align: center;
+    height: 15rem; /* Ajout de la hauteur fixe */
+    min-height: 15rem;
 }
 
-.banner-title {
+h1 {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -39,17 +41,19 @@ onMounted(async() => {
     color: black;
 }
 
-.banner-background {
-    width: 100%;
-    height: auto;
+.banner-background,
+.banner-top {
+    max-height: 100%;
+    max-width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .banner-top {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
     z-index: 0;
 }
 </style>

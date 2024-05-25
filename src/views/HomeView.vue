@@ -15,7 +15,9 @@ import WebtoonList from "@/components/webtoons/WebtoonList.vue";
 <style scoped lang="scss">
 
 header{
+    display: flex;
     align-items: center;
+    justify-content: center;
     padding: 1rem 0;
     position: fixed;
     top: 0;
@@ -26,6 +28,7 @@ header{
 
     &>h1{
         text-align: center;
+        vertical-align: center;
     }
 }
 

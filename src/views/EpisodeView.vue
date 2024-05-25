@@ -19,7 +19,6 @@ async function loadMore(){
     currentChunk.value++;
     const newImages = await getEpisodeImages(episodeId, currentChunk.value);
     images.value = images.value.concat(newImages.images);
-    console.log(images);
 }
 </script>
 
