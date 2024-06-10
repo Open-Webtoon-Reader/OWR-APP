@@ -1,17 +1,12 @@
 <script setup lang="ts">
-import * as apiurlMiddleware from "~/middleware/apiurl.middleware";
-definePageMeta({
-    middleware: [
-        apiurlMiddleware.default
-    ]
-});
+
 </script>
 
 <template>
     <div class="flex flex-col min-h-screen">
         <TopMenu/>
         <div class="flex flex-1 justify-center items-center text-center">
-            <h1>Home</h1>
+            <h1>Settings</h1>
         </div>
     </div>
 </template>
