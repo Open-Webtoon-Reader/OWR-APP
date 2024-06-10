@@ -6,7 +6,7 @@ import {useRoute} from "vue-router";
 const route = useRoute();
 
 function getButtonVariant(path: string){
-    return route.path === path ? "default" : "outline";
+    return route.path === path ? "secondary" : "outline";
 }
 </script>
 
