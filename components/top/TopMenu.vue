@@ -9,7 +9,7 @@ import NavButton from "~/components/buttons/NavButton.vue";
 
 <template>
     <div>
-        <div id="mobile" class="md:hidden items-center flex p-2 px-4">
+        <div id="mobile" class="md:hidden items-center flex py-2 px-4">
             <BurgerMenu/>
             <div class="w-full">
                 <h2 class="h2-reset text-center p-2 sm:hidden">OWR</h2>

@@ -15,5 +15,9 @@ export async function testApiConnection(apiUrl: string): Promise<boolean>{
 }
 
 export function sumToImageUrl(sum: string): string{
-    return `${axios.defaults.baseURL}/images/${sum}`;
+    return `${axios.defaults.baseURL}/image/${sum}`;
+}
+
+export function getWebtoons(): Promise<any>{
+    return axios.get("/webtoons/raw");
 }

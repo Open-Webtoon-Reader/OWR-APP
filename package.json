@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nuxt/eslint": "^0.3.13",
+    "@nuxt/image": "^1.7.0",
     "@nuxtjs/color-mode": "^3.4.1",
     "@vee-validate/zod": "^4.13.1",
     "@vueuse/core": "^10.10.0",

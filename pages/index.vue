@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import * as apiurlMiddleware from "~/middleware/apiurl.middleware";
+import WebtoonList from "~/components/webtoons/webtoons/WebtoonList.vue";
 definePageMeta({
     middleware: [
         apiurlMiddleware.default
@@ -9,8 +10,8 @@ definePageMeta({
 </script>
 
 <template>
-    <div class="flex flex-1 justify-center items-center text-center">
-        <h1>Home</h1>
+    <div>
+        <WebtoonList/>
     </div>
 </template>
 

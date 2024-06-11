@@ -6,8 +6,8 @@ import {Toaster} from "~/components/ui/toast";
 <template>
     <div>
         <Toaster/>
-        <div class="flex flex-col min-h-dvh">
-            <TopMenu/>
+        <div class="flex flex-col min-h-dvh min-w-dvh">
+            <TopMenu class="sticky top-0 w-full bg-background z-10"/>
             <slot/>
         </div>
     </div>
