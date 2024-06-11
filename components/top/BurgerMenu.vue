@@ -1,13 +1,8 @@
 <script setup lang="ts">
+
 import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from "~/components/ui/sheet";
-import {Button} from "~/components/ui/button";
-import {useRoute} from "vue-router";
+import NavButton from "~/components/buttons/NavButton.vue";
 
-const route = useRoute();
-
-function getButtonVariant(path: string){
-    return route.path === path ? "secondary" : "outline";
-}
 </script>
 
 <template>
@@ -20,8 +15,16 @@ function getButtonVariant(path: string){
                 <SheetHeader>
                     <SheetTitle>Open Webtoon Reader</SheetTitle>
                     <SheetDescription class="flex flex-col gap-2">
-                        <Button :variant="getButtonVariant('/')" class="w-full" @click="$router.push('/')">Home</Button>
-                        <Button :variant="getButtonVariant('/settings')" class="w-full" @click="$router.push('/settings')">Settings</Button>
+                        <SheetClose as-child>
+                            <NavButton path="/" icon="iconoir:home">
+                                Home
+                            </NavButton>
+                        </SheetClose>
+                        <SheetClose as-child>
+                            <NavButton path="/settings" icon="iconoir:home">
+                                Settings
+                            </NavButton>
+                        </SheetClose>
                     </SheetDescription>
                 </SheetHeader>
             </SheetContent>

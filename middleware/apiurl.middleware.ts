@@ -1,4 +1,5 @@
 import {getFromLocalStorage, clearFromLocalStorage} from "~/utils/utils";
+import {testApiConnection} from "~/utils/api";
 
 export default defineNuxtRouteMiddleware(async() => {
     const apiUrl = getFromLocalStorage("apiurl");

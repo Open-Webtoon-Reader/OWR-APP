@@ -13,7 +13,6 @@ import {Avatar, AvatarImage, AvatarFallback} from "~/components/ui/avatar";
             </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-            <DropdownMenuItem @click="$router.push('/')">Home</DropdownMenuItem>
             <DropdownMenuItem @click="$router.push('/settings')">Settings</DropdownMenuItem>
         </DropdownMenuContent>
     </DropdownMenu>
