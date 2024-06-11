@@ -30,13 +30,11 @@ onMounted(() => {
 </script>
 
 <template>
-    <div>
-        <div class="h-screen grid place-items-center">
-            <div class="fixed top-5 left-5 z-10">
-                <ThemeSwitcher/>
-            </div>
-            <ApiUrlCard/>
+    <div class="min-h-dvh grid place-items-center">
+        <div class="fixed top-5 left-5 z-10">
+            <ThemeSwitcher/>
         </div>
+        <ApiUrlCard/>
     </div>
 </template>
 

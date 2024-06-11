@@ -2,6 +2,7 @@
 
 import {DropdownMenu} from "~/components/ui/dropdown-menu";
 import {Avatar, AvatarImage, AvatarFallback} from "~/components/ui/avatar";
+
 </script>
 
 <template>

@@ -3,6 +3,12 @@
 import {Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger} from "~/components/ui/sheet";
 import NavButton from "~/components/buttons/NavButton.vue";
 
+function clearApiUrl(){
+    console.log("clear");
+    clearFromLocalStorage("apiurl");
+    navigateTo("/apiurl");
+}
+
 </script>
 
 <template>
@@ -25,6 +31,9 @@ import NavButton from "~/components/buttons/NavButton.vue";
                                 Settings
                             </NavButton>
                         </SheetClose>
+                        <Button variant="destructive" @click="clearApiUrl">
+                            API Url
+                        </Button>
                     </SheetDescription>
                 </SheetHeader>
             </SheetContent>

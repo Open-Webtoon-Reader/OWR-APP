@@ -15,8 +15,10 @@ const theme = computed(_ => {
 <template>
     <DropdownMenu>
         <DropdownMenuTrigger>
-            <Icon v-if="theme === 'dark'" name="iconoir:half-moon" class="icon-style"/>
-            <Icon v-else-if="theme === 'light'" name="iconoir:sun-light" class="icon-style"/>
+            <ClientOnly>
+                <Icon v-if="theme === 'dark'" name="iconoir:half-moon" class="icon-style"/>
+                <Icon v-else-if="theme === 'light'" name="iconoir:sun-light" class="icon-style"/>
+            </ClientOnly>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
             <DropdownMenuRadioGroup v-model="colorMode.preference">
