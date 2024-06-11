@@ -27,7 +27,7 @@ function clearApiUrl(){
                             </NavButton>
                         </SheetClose>
                         <SheetClose as-child>
-                            <NavButton path="/settings" icon="iconoir:home">
+                            <NavButton path="/settings" icon="iconoir:settings">
                                 Settings
                             </NavButton>
                         </SheetClose>
