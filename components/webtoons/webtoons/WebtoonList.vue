@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
-import { getWebtoons } from "~/utils/api";
+import {ref, computed, onMounted} from "vue";
+import {getWebtoons} from "~/utils/api";
 import WebtoonItem from "~/components/webtoons/webtoons/WebtoonItem.vue";
 
 const search = ref("");
@@ -10,7 +10,7 @@ function clearSearch(){
     search.value = "";
 }
 
-onMounted(async () => {
+onMounted(async() => {
     const response = await getWebtoons();
     webtoons.value = response.data;
     console.log(webtoons.value);
