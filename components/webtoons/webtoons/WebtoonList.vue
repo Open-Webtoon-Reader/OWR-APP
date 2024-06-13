@@ -26,7 +26,7 @@ const filteredWebtoons = computed(() => {
 </script>
 
 <template>
-    <div>
+    <div class="w-full md:w-3/4 lg:w-1/2 2xl:w-1/3 border-x-[1px]">
         <div id="header" class="flex gap-4 py-4 px-10">
             <div id="input" class="relative w-full max-w-sm items-center">
                 <Input v-model="search" placeholder="Search" class="pl-8"/>

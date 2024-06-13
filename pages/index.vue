@@ -10,7 +10,7 @@ definePageMeta({
 </script>
 
 <template>
-    <div>
+    <div class="flex justify-center">
         <WebtoonList/>
     </div>
 </template>

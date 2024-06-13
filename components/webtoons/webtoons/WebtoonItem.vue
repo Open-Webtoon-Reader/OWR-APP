@@ -31,7 +31,7 @@ onMounted(() => {
 <template>
     <Collapsible>
         <div id="main" class="flex items-center">
-            <NuxtImg :src="sumToImageUrl(webtoon.thumbnail)" loading="lazy" class="h-20"/>
+            <NuxtImg :src="sumToImageUrl(webtoon.thumbnail)" loading="lazy" class="h-20 aspect-square"/>
             <div id="infos" class="flex items-center w-full justify-between px-2">
                 <div id="text-infos" class="flex flex-col">
                     <h4>{{ webtoon.title }}</h4>
