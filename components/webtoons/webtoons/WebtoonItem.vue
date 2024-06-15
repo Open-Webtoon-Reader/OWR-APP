@@ -9,6 +9,13 @@ const {webtoon} = defineProps<{
     webtoon: any,
 }>();
 
+const isOpen = ref(false);
+
+function toggleCollapsible(){
+    isOpen.value = !isOpen.value;
+    console.log(isOpen.value);
+}
+
 onMounted(() => {
     webtoon.genres.sort();
     webtoon.genres = webtoon.genres.map((genre: string) => {
@@ -29,7 +36,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <Collapsible>
+    <Collapsible v-model:open="isOpen">
         <div id="main" class="flex items-center cursor-pointer" @click="navigateTo(`/webtoon/${webtoon.id}`)">
             <NuxtImg :src="sumToImageUrl(webtoon.thumbnail)" loading="lazy" class="aspect-square h-20 sm:h-24 md:h-28 xl:h-32"/>
             <div id="infos" class="flex items-center w-full justify-between px-2  h-20 sm:h-24 md:h-28 xl:h-32">
@@ -46,11 +53,9 @@ onMounted(() => {
                     </div>
                     <Badge variant="secondary" class="w-fit">{{ webtoon.language.toUpperCase() }}</Badge>
                 </div>
-                <CollapsibleTrigger>
-                    <Button variant="ghost">
-                        <Icon name="iconoir:arrow-down"/>
-                    </Button>
-                </CollapsibleTrigger>
+                <Button variant="ghost" @click="(event) => { event.stopPropagation(); toggleCollapsible()}">
+                    <Icon name="iconoir:arrow-down"/>
+                </Button>
             </div>
         </div>
         <CollapsibleContent class="pl-2">
