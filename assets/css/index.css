@@ -72,7 +72,7 @@
         @apply border-border;
     }
     body {
-        @apply bg-background text-foreground;
+        @apply bg-background text-foreground font-sans antialiased text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl;
     }
 
     h1{
@@ -85,7 +85,7 @@
         @apply scroll-m-20 text-2xl font-semibold tracking-tight;
     }
     h4{
-        @apply scroll-m-20 text-xl font-semibold tracking-tight;
+        @apply scroll-m-20 text-base sm:text-lg md:text-xl lg:text-2xl font-semibold tracking-tight;
     }
     p{
         @apply leading-7 [&:not(:first-child)]:mt-6;

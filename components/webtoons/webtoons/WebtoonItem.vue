@@ -31,12 +31,14 @@ onMounted(() => {
 <template>
     <Collapsible>
         <div id="main" class="flex items-center">
-            <NuxtImg :src="sumToImageUrl(webtoon.thumbnail)" loading="lazy" class="h-20 aspect-square"/>
-            <div id="infos" class="flex items-center w-full justify-between px-2">
-                <div id="text-infos" class="flex flex-col">
-                    <h4>{{ webtoon.title }}</h4>
-                    <p class="!m-0">{{ webtoon.author }}</p>
-                    <!--<Badge variant="secondary" class="w-fit">{{ webtoon.language.toUpperCase() }}</Badge>-->
+            <NuxtImg :src="sumToImageUrl(webtoon.thumbnail)" loading="lazy" class="aspect-square h-20 md:h-24 xl:h-28"/>
+            <div id="infos" class="flex items-center w-full justify-between px-2 h-20 md:h-24 xl:h-28">
+                <div id="text-infos" class="flex flex-col justify-between gap-2 h-full py-1">
+                    <div class="flex flex-col gap-1">
+                        <h4>{{ webtoon.title }}</h4>
+                        <p class="!m-0 leading-4 xl:leading-6">{{ webtoon.author }}</p>
+                    </div>
+                    <Badge variant="secondary" class="w-fit">{{ webtoon.language.toUpperCase() }}</Badge>
                 </div>
                 <CollapsibleTrigger>
                     <Button variant="ghost">
