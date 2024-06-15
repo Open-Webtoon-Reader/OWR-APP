@@ -21,3 +21,7 @@ export function sumToImageUrl(sum: string): string{
 export function getWebtoons(): Promise<any>{
     return axios.get("/webtoons/raw");
 }
+
+export function getEpisodes(episodeId: number): Promise<any>{
+    return axios.get(`/webtoons/${episodeId}/episodes/raw`);
+}
