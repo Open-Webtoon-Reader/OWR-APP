@@ -9,9 +9,11 @@ export default defineNuxtRouteMiddleware(async() => {
         useState("toast").value = "not-present";
         return navigateTo("/apiurl");
     }
-    if(!await testApiConnection(apiUrl)){
-        clearFromLocalStorage("apiurl");
-        useState("toast").value = "timeout";
-        return navigateTo("/apiurl");
-    }
+    testApiConnection(apiUrl).then(result => {
+        if (!result){
+            clearFromLocalStorage("apiurl");
+            useState("toast").value = "invalid";
+            navigateTo("/apiurl");
+        }
+    });
 });
