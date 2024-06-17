@@ -18,6 +18,11 @@ function increaseMaxIndex(){
 }
 
 onMounted(async() => {
+    const webtoonsState: any = useState("webtoons");
+    if (webtoonsState.value && webtoonsState.value.length){
+        webtoons.value = webtoonsState.value;
+        return;
+    }
     const response = await getWebtoons();
     webtoons.value = response.data;
     // Sort webtoons by title
@@ -26,6 +31,7 @@ onMounted(async() => {
     webtoons.value.sort((a, b) => b.hasNewEpisodes - a.hasNewEpisodes);
     // Then by isNew
     webtoons.value.sort((a, b) => b.isNew - a.isNew);
+    webtoonsState.value = webtoons.value;
 });
 
 // Computed property for filtered webtoons

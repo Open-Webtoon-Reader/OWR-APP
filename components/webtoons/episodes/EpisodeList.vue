@@ -13,8 +13,14 @@ const maxIndex = ref<number>(30);
 const id = useRoute().params.id as any as number;
 
 function loadEpisodes(){
+    const webtoonState: any = useState(`webtoon-${id}`);
+    if (webtoonState.value){
+        episodes.value = webtoonState.value;
+        return;
+    }
     getEpisodes(id).then(response => {
         episodes.value = response.data;
+        webtoonState.value = response.data;
     });
 }
 
