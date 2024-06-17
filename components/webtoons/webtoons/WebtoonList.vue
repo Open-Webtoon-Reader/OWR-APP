@@ -2,6 +2,7 @@
 import {ref, computed, onMounted} from "vue";
 import {getWebtoons} from "~/utils/api";
 import WebtoonItem from "~/components/webtoons/webtoons/WebtoonItem.vue";
+import WebtoonSkeleton from "~/components/webtoons/webtoons/WebtoonSkeleton.vue";
 
 const search = ref("");
 const webtoons = ref<any[]>([]);
@@ -45,6 +46,10 @@ const filteredWebtoons = computed(() => {
         </div>
         <Separator/>
         <div id="content" class="h-full overflow-y-scroll">
+            <div v-if="!webtoons.length">
+                <WebtoonSkeleton/>
+                <Separator/>
+            </div>
             <div v-for="webtoon in filteredWebtoons" :key="webtoon.id">
                 <WebtoonItem :webtoon="webtoon"/>
                 <Separator/>
