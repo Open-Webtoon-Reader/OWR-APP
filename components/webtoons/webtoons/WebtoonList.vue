@@ -3,12 +3,18 @@ import {ref, computed, onMounted} from "vue";
 import {getWebtoons} from "~/utils/api";
 import WebtoonItem from "~/components/webtoons/webtoons/WebtoonItem.vue";
 import WebtoonSkeleton from "~/components/webtoons/webtoons/WebtoonSkeleton.vue";
+import VisibilityObserver from "~/components/utils/VisibilityObserver.vue";
 
 const search = ref("");
 const webtoons = ref<any[]>([]);
+const maxIndex = ref<number>(30);
 
 function clearSearch(){
     search.value = "";
+}
+
+function increaseMaxIndex(){
+    maxIndex.value += 30;
 }
 
 onMounted(async() => {
@@ -52,8 +58,11 @@ const filteredWebtoons = computed(() => {
                     <Separator/>
                 </div>
             </div>
-            <div v-for="webtoon in filteredWebtoons" :key="webtoon.id">
-                <WebtoonItem :webtoon="webtoon"/>
+            <div v-for="webtoon in filteredWebtoons.slice(0, maxIndex)" :key="webtoon.id">
+                <WebtoonItem v-if="filteredWebtoons.indexOf(webtoon) < maxIndex - 1" :webtoon="webtoon"/>
+                <VisibilityObserver v-else @on-display="increaseMaxIndex">
+                    <WebtoonItem :webtoon="webtoon"/>
+                </VisibilityObserver>
                 <Separator/>
             </div>
         </div>
