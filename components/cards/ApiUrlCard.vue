@@ -1,0 +1,104 @@
+<script setup lang="ts">
+import {Button} from "~/components/ui/button";
+import {Input} from "~/components/ui/input";
+import {FormControl, FormItem, FormLabel, FormMessage, FormField} from "~/components/ui/form";
+import {useForm} from "vee-validate";
+import {toTypedSchema} from "@vee-validate/zod";
+import * as z from "zod";
+import {saveToLocalStorage} from "~/utils/utils";
+import {useToast} from "~/components/ui/toast";
+
+const router = useRouter();
+const {toast: toaster} = useToast();
+
+const connectButtonState = ref(false);
+
+const formSchema = toTypedSchema(z.object({
+    apiurl: z.string().url("Please enter a valid URL.")
+}));
+const {handleSubmit} = useForm({
+    validationSchema: formSchema,
+});
+const onSubmit = handleSubmit(async(values) => {
+    connectButtonState.value = true;
+    const apiUrl = values.apiurl;
+    if(apiUrl.endsWith("/")) // Remove last "/" if present
+        values.apiurl = apiUrl.slice(0, -1);
+    if(await testApiConnection(values.apiurl)){
+        saveToLocalStorage("apiurl", values.apiurl);
+        await router.push("/");
+    }else{
+        toaster({
+            title: "Connection Timeout!",
+            description: "The API Url you entered took too long to respond. Please check the URL and try again.",
+            variant: "destructive",
+        });
+        connectButtonState.value = false;
+    }
+});
+</script>
+
+<template>
+    <Card class="w-[350px]">
+        <CardHeader>
+            <CardTitle>Open Webtoon Reader</CardTitle>
+            <CardDescription>Welcome to OWR, the open-source webtoon reader</CardDescription>
+        </CardHeader>
+        <CardContent>
+            <form class="space-y-6" @submit="onSubmit">
+                <FormField v-slot="{ componentField }" name="apiurl">
+                    <FormItem>
+                        <FormLabel>API Url</FormLabel>
+                        <FormControl>
+                            <div class="relative w-full max-w-sm items-center">
+                                <Input id="apiurl" placeholder="Enter the API Url" label="API Url" class="pl-10" autocomplete="off" v-bind="componentField"/>
+                                <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
+                                    <Icon name="iconoir:wifi-signal-none" class="size-6 text-muted-foreground"/>
+                                </span>
+                            </div>
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                </FormField>
+                <Button v-if="!connectButtonState" class="w-full" type="submit">
+                    Connect
+                </Button>
+                <Button v-else disabled class="w-full">
+                    <Icon name="iconoir:refresh-double" class="w-4 h-4 mr-2 animate-spin"/>
+                    Connecting...
+                </Button>
+            </form>
+        </CardContent>
+    </Card>
+</template>
+
+<!--<template>-->
+<!--    <Card class="w-[350px]">-->
+<!--        <CardHeader>-->
+<!--            <CardTitle>Open Webtoon Reader</CardTitle>-->
+<!--            <CardDescription>Welcome to OWR, the open-source webtoon reader</CardDescription>-->
+<!--        </CardHeader>-->
+<!--        <CardContent>-->
+<!--            <Label for="name">API Url</Label>-->
+<!--            <div class="relative w-full max-w-sm items-center">-->
+<!--                <Input id="name" placeholder="Enter the API Url" label="Name" class="pl-10" autocomplete="off"/>-->
+<!--                <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">-->
+<!--                    <Icon name="iconoir:wifi-signal-none" class="size-6 text-muted-foreground"/>-->
+<!--                </span>-->
+<!--            </div>-->
+<!--        </CardContent>-->
+<!--        <CardFooter class="flex justify-between gap-3">-->
+<!--            <Button v-if="!connectButtonState" class="w-full" @click="connectToApi">-->
+<!--                Connect-->
+<!--            </Button>-->
+<!--            <Button v-else disabled class="w-full" @click="connectToApi">-->
+<!--                <Icon name="iconoir:refresh-double" class="w-4 h-4 mr-2 animate-spin"/>-->
+<!--                Connecting...-->
+<!--            </Button>-->
+<!--        </CardFooter>-->
+<!--    </Card>-->
+<!--</template>-->
+
+<style scoped>
+
+</style>
