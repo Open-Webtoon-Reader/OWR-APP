@@ -25,3 +25,7 @@ export function getWebtoons(): Promise<any>{
 export function getEpisodes(episodeId: number): Promise<any>{
     return axios.get(`/webtoons/${episodeId}/episodes/raw`);
 }
+
+export function getRandomThumbnail(): Promise<any>{
+    return axios.get("/webtoons/thumbnails/random");
+}

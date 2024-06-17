@@ -2,6 +2,14 @@
 
 import {DropdownMenu} from "~/components/ui/dropdown-menu";
 import {Avatar, AvatarImage, AvatarFallback} from "~/components/ui/avatar";
+import {getRandomThumbnail, sumToImageUrl} from "~/utils/api";
+
+const randomAvatar = ref<string>()
+
+onMounted(async() => {
+    const res = await getRandomThumbnail();
+    randomAvatar.value = sumToImageUrl(res.data.thumbnail)
+})
 
 </script>
 
@@ -9,7 +17,7 @@ import {Avatar, AvatarImage, AvatarFallback} from "~/components/ui/avatar";
     <DropdownMenu>
         <DropdownMenuTrigger class="w-10 h-10">
             <Avatar class="w-10 h-10">
-                <AvatarImage src="https://github.com/radix-vue.png"/>
+                <AvatarImage :src="randomAvatar"/>
                 <AvatarFallback>G</AvatarFallback>
             </Avatar>
         </DropdownMenuTrigger>

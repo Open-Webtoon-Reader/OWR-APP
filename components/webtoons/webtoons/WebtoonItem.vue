@@ -13,7 +13,6 @@ const isOpen = ref(false);
 
 function toggleCollapsible(){
     isOpen.value = !isOpen.value;
-    console.log(isOpen.value);
 }
 
 onMounted(() => {
