@@ -31,5 +31,9 @@ export function getRandomThumbnail(): Promise<any>{
 }
 
 export function getWebtoon(webtoonId: number): Promise<any>{
-    return axios.get(`/webtoons/${webtoonId}`);
+    return axios.get(`/webtoons/${webtoonId}/raw`);
+}
+
+export function getEpisodeImages(episodeId: number): Promise<any>{
+    return axios.get(`/webtoons/episodes/${episodeId}/images/raw`);
 }
