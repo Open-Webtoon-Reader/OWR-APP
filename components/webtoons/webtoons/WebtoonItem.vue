@@ -42,7 +42,7 @@ onMounted(() => {
                 <div id="text-infos" class="flex flex-col justify-between gap-auto h-full py-1 sm:py-2">
                     <div class="flex flex-col gap-0 md:gap-1 lg:gap-2">
                         <div id="title" class="flex flex-row gap-2">
-                            <div v-if="webtoon.hasNew || webtoon.hasNewEpisodes" class="flex items-center">
+                            <div v-if="webtoon.isNew || webtoon.hasNewEpisodes" class="flex items-center">
                                 <Badge v-if="webtoon.hasNewEpisodes && !webtoon.isNew" variant="default">New</Badge>
                                 <Badge v-if="webtoon.isNew" variant="destructive">New</Badge>
                             </div>
