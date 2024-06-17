@@ -5,7 +5,7 @@ import {Skeleton} from "~/components/ui/skeleton";
 
 <template>
     <div id="main" class="flex items-center">
-        <Skeleton class="aspect-square h-20 sm:h-24 md:h-28 xl:h-32"/>
+        <Skeleton class="aspect-square h-20 sm:h-24 md:h-28 xl:h-32 rounded-none"/>
         <div id="infos" class="flex items-center w-full justify-between pl-2 pr-4 h-20 sm:h-24 md:h-28 xl:h-32">
             <div id="text-infos" class="flex flex-col w-full h-full justify-center">
                 <div class="flex flex-row justify-between items-center">

@@ -47,8 +47,10 @@ const filteredWebtoons = computed(() => {
         <Separator/>
         <div id="content" class="h-full overflow-y-scroll">
             <div v-if="!webtoons.length">
-                <WebtoonSkeleton/>
-                <Separator/>
+                <div v-for="n in 4" :key="n">
+                    <WebtoonSkeleton/>
+                    <Separator/>
+                </div>
             </div>
             <div v-for="webtoon in filteredWebtoons" :key="webtoon.id">
                 <WebtoonItem :webtoon="webtoon"/>

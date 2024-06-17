@@ -11,7 +11,7 @@ definePageMeta({
 </script>
 
 <template>
-    <div class="flex justify-center h-[calc(theme(height.dvh)-70px)]">
+    <div class="flex justify-center h-[calc(theme(height.dvh)-134px)]">
         <EpisodeList/>
     </div>
 </template>

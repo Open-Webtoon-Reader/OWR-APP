@@ -37,8 +37,10 @@ onMounted(() => {
         <Separator/>
         <div id="content" class="h-full overflow-y-scroll">
             <div v-if="!episodes.length">
-                <EpisodeSkeleton/>
-                <Separator/>
+                <div v-for="n in 4" :key="n">
+                    <EpisodeSkeleton/>
+                    <Separator/>
+                </div>
             </div>
             <div v-for="episode in episodes" :key="episode.id">
                 <EpisodeItem :episode="episode"/>
