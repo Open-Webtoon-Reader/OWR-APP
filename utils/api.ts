@@ -34,6 +34,10 @@ export function getWebtoon(webtoonId: number): Promise<any>{
     return axios.get(`/webtoons/${webtoonId}`);
 }
 
+export function getEpisodeInfos(episodeId: number): Promise<any>{
+    return axios.get(`/webtoons/episodes/${episodeId}`);
+}
+
 export function getEpisodeImages(episodeId: number): Promise<any>{
     return axios.get(`/webtoons/episodes/${episodeId}/images`);
 }
