@@ -19,11 +19,11 @@ export function sumToImageUrl(sum: string): string{
 }
 
 export function getWebtoons(): Promise<any>{
-    return axios.get("/webtoons/raw");
+    return axios.get("/webtoons");
 }
 
 export function getEpisodes(episodeId: number): Promise<any>{
-    return axios.get(`/webtoons/${episodeId}/episodes/raw`);
+    return axios.get(`/webtoons/${episodeId}/episodes`);
 }
 
 export function getRandomThumbnail(): Promise<any>{
@@ -31,9 +31,9 @@ export function getRandomThumbnail(): Promise<any>{
 }
 
 export function getWebtoon(webtoonId: number): Promise<any>{
-    return axios.get(`/webtoons/${webtoonId}/raw`);
+    return axios.get(`/webtoons/${webtoonId}`);
 }
 
 export function getEpisodeImages(episodeId: number): Promise<any>{
-    return axios.get(`/webtoons/episodes/${episodeId}/images/raw`);
+    return axios.get(`/webtoons/episodes/${episodeId}/images`);
 }
