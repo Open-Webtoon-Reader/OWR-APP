@@ -69,10 +69,14 @@
 
 @layer base {
     * {
-        @apply border-border;
+        @apply border-border select-none;
     }
     body {
         @apply bg-background text-foreground font-sans antialiased text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl;
+    }
+
+    img{
+        @apply pointer-events-none;
     }
 
     h1{
