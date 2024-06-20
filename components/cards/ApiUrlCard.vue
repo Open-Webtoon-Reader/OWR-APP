@@ -48,10 +48,10 @@ const onSubmit = handleSubmit(async(values) => {
             <form class="space-y-6" @submit="onSubmit">
                 <FormField v-slot="{ componentField }" name="apiurl">
                     <FormItem>
-                        <FormLabel>API Url</FormLabel>
+                        <FormLabel>Server URL</FormLabel>
                         <FormControl>
                             <div class="relative w-full max-w-sm items-center">
-                                <Input id="apiurl" placeholder="Enter the API Url" label="API Url" class="pl-10" autocomplete="off" v-bind="componentField"/>
+                                <Input id="apiurl" placeholder="Enter the server URL" label="API Url" class="pl-10" autocomplete="off" v-bind="componentField" default-value="https://"/>
                                 <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
                                     <Icon name="iconoir:wifi-signal-none" class="size-6 text-muted-foreground"/>
                                 </span>
@@ -71,33 +71,6 @@ const onSubmit = handleSubmit(async(values) => {
         </CardContent>
     </Card>
 </template>
-
-<!--<template>-->
-<!--    <Card class="w-[350px]">-->
-<!--        <CardHeader>-->
-<!--            <CardTitle>Open Webtoon Reader</CardTitle>-->
-<!--            <CardDescription>Welcome to OWR, the open-source webtoon reader</CardDescription>-->
-<!--        </CardHeader>-->
-<!--        <CardContent>-->
-<!--            <Label for="name">API Url</Label>-->
-<!--            <div class="relative w-full max-w-sm items-center">-->
-<!--                <Input id="name" placeholder="Enter the API Url" label="Name" class="pl-10" autocomplete="off"/>-->
-<!--                <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">-->
-<!--                    <Icon name="iconoir:wifi-signal-none" class="size-6 text-muted-foreground"/>-->
-<!--                </span>-->
-<!--            </div>-->
-<!--        </CardContent>-->
-<!--        <CardFooter class="flex justify-between gap-3">-->
-<!--            <Button v-if="!connectButtonState" class="w-full" @click="connectToApi">-->
-<!--                Connect-->
-<!--            </Button>-->
-<!--            <Button v-else disabled class="w-full" @click="connectToApi">-->
-<!--                <Icon name="iconoir:refresh-double" class="w-4 h-4 mr-2 animate-spin"/>-->
-<!--                Connecting...-->
-<!--            </Button>-->
-<!--        </CardFooter>-->
-<!--    </Card>-->
-<!--</template>-->
 
 <style scoped>
 
