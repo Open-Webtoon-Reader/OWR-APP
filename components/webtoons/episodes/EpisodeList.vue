@@ -67,7 +67,7 @@ onMounted(() => {
                     <Separator/>
                 </div>
             </div>
-            <div v-for="episode in orderedEpisodes.slice(0, maxIndex)" :key="episode.id">
+            <div v-for="episode in orderedEpisodes.slice(0, maxIndex)" id="card" :key="episode.id">
                 <EpisodeItem v-if="orderedEpisodes.indexOf(episode) < maxIndex - 1" :episode="episode"/>
                 <VisibilityObserver v-else @on-display="increaseMaxIndex">
                     <EpisodeItem :episode="episode"/>

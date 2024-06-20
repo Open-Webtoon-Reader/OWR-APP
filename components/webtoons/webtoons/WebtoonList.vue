@@ -64,7 +64,7 @@ const filteredWebtoons = computed(() => {
                     <Separator/>
                 </div>
             </div>
-            <div v-for="webtoon in filteredWebtoons.slice(0, maxIndex)" :key="webtoon.id">
+            <div v-for="webtoon in filteredWebtoons.slice(0, maxIndex)" id="card" :key="webtoon.id">
                 <WebtoonItem v-if="filteredWebtoons.indexOf(webtoon) < maxIndex - 1" :webtoon="webtoon"/>
                 <VisibilityObserver v-else @on-display="increaseMaxIndex">
                     <WebtoonItem :webtoon="webtoon"/>
