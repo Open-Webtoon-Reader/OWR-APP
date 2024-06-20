@@ -52,7 +52,7 @@ onMounted(async() => {
     <div class="flex flex-col items-center w-full md:w-2/3 lg:w-1/2 xl:w-1/3">
         <h3 class="m-2">{{ episodeInfos.title }}</h3>
         <div v-for="image of episodeImages.slice(0, maxIndex)" :key="episodeImages.indexOf(image)" class="w-full">
-            <NuxtImg v-if="episodeImages.indexOf(image) < maxIndex - 1" :src="sumToImageUrl(image)" format="webp" loading="lazy" alt="Episode Image" class="w-full"/>
+            <NuxtImg v-if="episodeImages.indexOf(image) < maxIndex - 1" :src="sumToImageUrl(image)" format="webp" alt="Episode Image" class="w-full"/>
             <VisibilityObserver v-else @on-display="increaseMaxIndex">
                 <NuxtImg :src="sumToImageUrl(image)" alt="Episode Image" class=""/>
             </VisibilityObserver>
