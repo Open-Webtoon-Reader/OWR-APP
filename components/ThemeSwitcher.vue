@@ -3,14 +3,14 @@ const colorMode = useColorMode();
 const theme = computed(_ => {
     switch (colorMode.preference){
         case "system":
-            return window?.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+            return window?.matchMedia("[preferred-color-scheme: dark]") ? "dark" : "light";
         default:
             return colorMode.preference;
     }
 });
 
 function toggleTheme(){
-    colorMode.preference = colorMode.preference === "dark" ? "light" : "dark";
+    colorMode.preference = theme.value === "light" ? "dark" : "light";
 }
 </script>
 
