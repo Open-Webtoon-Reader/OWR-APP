@@ -16,8 +16,16 @@ const episodeImages = ref<string[]>([]);
 const episodeInfos = ref<any>({});
 const maxIndex = ref<number>(10);
 
+let isIncreasing = false;
+
 function increaseMaxIndex(){
-    maxIndex.value += 10;
+    if (!isIncreasing){
+        isIncreasing = true;
+        maxIndex.value += 10;
+        setTimeout(() => {
+            isIncreasing = false;
+        }, 500);
+    }
 }
 
 async function loadEpisodeImages(){
@@ -55,7 +63,7 @@ onMounted(async() => {
         </div>
         <div v-for="image of episodeImages.slice(0, maxIndex)" :key="episodeImages.indexOf(image)" class="w-full">
             <NuxtImg v-if="episodeImages.indexOf(image) < maxIndex - 1" :src="sumToImageUrl(image)" format="webp" alt="Episode Image" class="w-full"/>
-            <VisibilityObserver v-else @on-display="increaseMaxIndex">
+            <VisibilityObserver v-else  @on-display="increaseMaxIndex">
                 <NuxtImg :src="sumToImageUrl(image)" alt="Episode Image"/>
             </VisibilityObserver>
         </div>
