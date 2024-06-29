@@ -15,12 +15,10 @@ function toggleTheme(){
 </script>
 
 <template>
-    <Button variant="ghost" @click="toggleTheme">
-        <ClientOnly>
-            <Icon v-if="theme === 'dark'" name="iconoir:half-moon" class="icon-style"/>
-            <Icon v-else-if="theme === 'light'" name="iconoir:sun-light" class="icon-style"/>
-        </ClientOnly>
-    </Button>
+    <ClientOnly>
+        <Icon v-if="theme === 'dark'" name="iconoir:half-moon" class="icon-style" @click="toggleTheme"/>
+        <Icon v-else-if="theme === 'light'" name="iconoir:sun-light" class="icon-style" @click="toggleTheme"/>
+    </ClientOnly>
 </template>
 
 <style scoped>
