@@ -15,10 +15,8 @@ function toggleTheme(){
 </script>
 
 <template>
-    <ClientOnly>
-        <Icon v-if="theme === 'dark'" name="iconoir:half-moon" class="icon-style" @click="toggleTheme"/>
-        <Icon v-else-if="theme === 'light'" name="iconoir:sun-light" class="icon-style" @click="toggleTheme"/>
-    </ClientOnly>
+    <Icon v-if="theme === 'dark'" name="iconoir:half-moon" class="w-8 h-8" @click="toggleTheme"/>
+    <Icon v-else-if="theme === 'light'" name="iconoir:sun-light" class="w-8 h-8" @click="toggleTheme"/>
 </template>
 
 <style scoped>
