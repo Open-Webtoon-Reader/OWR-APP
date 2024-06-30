@@ -16,16 +16,8 @@ const episodeImages = ref<string[]>([]);
 const episodeInfos = ref<any>({});
 const maxIndex = ref<number>(10);
 
-let isIncreasing = false;
-
 function increaseMaxIndex(){
-    if (!isIncreasing){
-        isIncreasing = true;
-        maxIndex.value += 10;
-        setTimeout(() => {
-            isIncreasing = false;
-        }, 500);
-    }
+    maxIndex.value += 10;
 }
 
 async function loadEpisodeImages(){
@@ -50,6 +42,11 @@ async function loadEpisodeInfos(){
     episodeState.value = episodeInfos.value;
 }
 
+function removeLoadingClass(event: Event){
+    const target = event.target as HTMLImageElement;
+    target.classList.remove("loading-episode");
+}
+
 onMounted(async() => {
     loadEpisodeImages();
     loadEpisodeInfos();
@@ -62,9 +59,21 @@ onMounted(async() => {
             <h3 class="m-2">{{ episodeInfos.title }}</h3>
         </div>
         <div v-for="image of episodeImages.slice(0, maxIndex)" :key="episodeImages.indexOf(image)" class="w-full">
-            <NuxtImg v-if="episodeImages.indexOf(image) < maxIndex - 1" :src="sumToImageUrl(image)" format="webp" alt="Episode Image" class="w-full"/>
+            <NuxtImg
+                v-if="episodeImages.indexOf(image) < maxIndex - 1"
+                :src="sumToImageUrl(image)"
+                format="webp"
+                alt="Episode Image"
+                class="w-full loading-episode"
+                @load="removeLoadingClass"
+            />
             <VisibilityObserver v-else  @on-display="increaseMaxIndex">
-                <NuxtImg :src="sumToImageUrl(image)" alt="Episode Image"/>
+                <NuxtImg
+                    :src="sumToImageUrl(image)"
+                    alt="Episode Image"
+                    class="w-full loading-episode"
+                    @load="removeLoadingClass"
+                />
             </VisibilityObserver>
         </div>
         <div id="footer" class="w-full flex flex-row justify-between py-4 px-8 border-[1px]">
@@ -79,5 +88,7 @@ onMounted(async() => {
 </template>
 
 <style scoped>
-
+.loading-episode{
+    @apply h-96;
+}
 </style>
