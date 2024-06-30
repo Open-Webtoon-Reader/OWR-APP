@@ -7,6 +7,11 @@ definePageMeta({
     ],
     layout: "nav-layout"
 });
+
+useSeoMeta({
+    title: "OWR",
+    description: "Episodes page",
+});
 </script>
 
 <template>

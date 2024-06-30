@@ -10,6 +10,11 @@ definePageMeta({
     layout: "free-nav-layout"
 });
 
+useSeoMeta({
+    title: "OWR",
+    description: "Episode page",
+});
+
 const id = useRoute().params.id as any as number;
 
 const episodeImages = ref<string[]>([]);
@@ -40,6 +45,10 @@ async function loadEpisodeInfos(){
     const response = await getEpisodeInfos(id);
     episodeInfos.value = response.data;
     episodeState.value = episodeInfos.value;
+    useSeoMeta({
+        title: `OWR | ${episodeInfos.value.title}`,
+        description: "Episode page",
+    });
 }
 
 function removeLoadingClass(event: Event){

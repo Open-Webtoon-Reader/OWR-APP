@@ -16,7 +16,7 @@ export default defineNuxtConfig({
     },
     colorMode: {
         preference: "system",
-        fallback: "light",
+        fallback: "dark",
         classSuffix: ""
     },
     tailwindcss: {
@@ -28,4 +28,9 @@ export default defineNuxtConfig({
         exposeConfig: false,
         viewer: true,
     },
+    app: {
+        head: {
+            link: [{rel: "icon", type: "image/svg+xml", href: "/logo.svg"}]
+        }
+    }
 });

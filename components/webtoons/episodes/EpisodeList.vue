@@ -6,6 +6,11 @@ import {Skeleton} from "~/components/ui/skeleton";
 import EpisodeSkeleton from "~/components/webtoons/episodes/EpisodeSkeleton.vue";
 import VisibilityObserver from "~/components/utils/VisibilityObserver.vue";
 
+useSeoMeta({
+    title: "OWR",
+    description: "Episodes page",
+});
+
 const title = ref("");
 const episodes = ref<any[]>([]);
 const maxIndex = ref<number>(30);
@@ -28,6 +33,10 @@ function loadEpisodes(){
 function loadTitle(){
     getWebtoon(id).then(response => {
         title.value = response.data.title;
+        useSeoMeta({
+            title: `OWR | ${response.data.title}`,
+            description: "Episode page",
+        });
     });
 }
 

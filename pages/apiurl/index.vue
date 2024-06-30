@@ -8,6 +8,11 @@ definePageMeta({
     ]
 });
 
+useSeoMeta({
+    title: "OWR",
+    description: "Episodes page",
+});
+
 onMounted(() => {
     const {toast: toaster} = useToast();
     const toast = useState("toast").value;

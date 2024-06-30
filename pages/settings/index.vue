@@ -3,6 +3,10 @@ definePageMeta({
     middleware: "apiurl-middleware",
     layout: "nav-layout"
 });
+useSeoMeta({
+    title: "OWR | Settings",
+    description: "Settings page",
+});
 </script>
 
 <template>
