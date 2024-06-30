@@ -8,7 +8,7 @@ import NavButton from "~/components/buttons/NavButton.vue";
 </script>
 
 <template>
-    <div id="mobile" class="md:hidden items-center flex py-2 px-4 justify-between">
+    <div id="mobile" class="md:hidden items-center flex py-2 px-4 justify-between w-full">
         <BurgerMenu/>
         <div class="">
             <h2 class="h2-reset text-center p-2 sm:hidden">OWR</h2>
@@ -16,7 +16,7 @@ import NavButton from "~/components/buttons/NavButton.vue";
         </div>
         <ThemeSwitcher/>
     </div>
-    <div id="pc" class="max-md:hidden items-center flex p-2 px-4 justify-between">
+    <div id="pc" class="max-md:hidden items-center flex p-2 px-4 justify-between w-full">
         <div class="flex items-center gap-8">
             <h2 class="h2-reset text-center p-2">Open Webtoon Reader</h2>
             <div id="nav" class="flex gap-4">
