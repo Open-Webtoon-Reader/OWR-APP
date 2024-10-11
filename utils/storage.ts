@@ -43,3 +43,27 @@ export function isEpisodeStarted(episodeId: number): boolean{
     }
     return false;
 }
+
+export function setEpisodeProgression(episodeId: number, progression: number): void{
+    if(import.meta.server)
+        return;
+    let progressions = localStorage.getItem("progression");
+    if(progressions){
+        progressions = JSON.parse(progressions);
+        progressions[episodeId] = progression;
+        localStorage.setItem("progression", JSON.stringify(progressions));
+    } else {
+        localStorage.setItem("progression", JSON.stringify({[episodeId]: progression}));
+    }
+}
+
+export function getEpisodeProgression(episodeId: number): number{
+    if(import.meta.server)
+        return;
+    let progressions = localStorage.getItem("progression");
+    if(progressions){
+        progressions = JSON.parse(progressions);
+        return progressions[episodeId] || 0;
+    }
+    return 0;
+}
