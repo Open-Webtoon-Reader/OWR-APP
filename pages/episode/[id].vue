@@ -64,11 +64,6 @@ async function loadEpisodeInfos(){
     });
 }
 
-function removeLoadingClass(event: Event){
-    const target = event.target as HTMLImageElement;
-    target.classList.remove("loading-episode");
-}
-
 onMounted(async() => {
     loadEpisodeImages();
     loadEpisodeInfos();
@@ -83,18 +78,23 @@ onMounted(async() => {
         <div v-for="(image, index) of episodeImages.slice(0, maxIndex)" :key="index" class="w-full">
             <NuxtImg
                 v-if="index < maxIndex - 1"
+                :id="image"
                 :src="sumToImageUrl(image)"
                 format="webp"
                 alt="Episode Image"
-                class="w-full loading-episode"
-                @load="removeLoadingClass"
+                class="w-full"
+                width="800"
+                height="1280"
             />
             <VisibilityObserver v-else @on-display="increaseMaxIndex">
                 <NuxtImg
+                    :id="image"
                     :src="sumToImageUrl(image)"
+                    format="webp"
                     alt="Episode Image"
-                    class="w-full loading-episode"
-                    @load="removeLoadingClass"
+                    class="w-full"
+                    width="800"
+                    height="1280"
                 />
             </VisibilityObserver>
         </div>
@@ -110,7 +110,5 @@ onMounted(async() => {
 </template>
 
 <style scoped>
-.loading-episode{
-    @apply h-96;
-}
+
 </style>

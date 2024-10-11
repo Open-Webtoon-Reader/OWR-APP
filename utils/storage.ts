@@ -19,6 +19,8 @@ export function getOrder(webtoonId: number): boolean{
 }
 
 export function startEpisode(episodeId: number): void{
+    if(import.meta.server)
+        return;
     let episodes = localStorage.getItem("episode");
     if(episodes){
         episodes = JSON.parse(episodes);
@@ -32,6 +34,8 @@ export function startEpisode(episodeId: number): void{
 }
 
 export function isEpisodeStarted(episodeId: number): boolean{
+    if(import.meta.server)
+        return;
     let episodes = localStorage.getItem("episode");
     if(episodes){
         episodes = JSON.parse(episodes);
