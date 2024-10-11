@@ -2,6 +2,7 @@
 import * as apiurlMiddleware from "~/middleware/apiurl.middleware";
 import {getEpisodeImages, getEpisodeInfos} from "~/utils/api";
 import VisibilityObserver from "~/components/utils/VisibilityObserver.vue";
+import {startEpisode} from "~/utils/storage";
 
 definePageMeta({
     middleware: [
@@ -16,6 +17,18 @@ useSeoMeta({
 });
 
 const id = useRoute().params.id as any as number;
+
+const isCancelled = ref(false);
+new Promise((resolve) => {
+    setTimeout(() => {
+        if (isCancelled.value) return;
+        startEpisode(id);
+        resolve();
+    }, 2500);
+});
+onBeforeRouteLeave(() => {
+    isCancelled.value = true;
+});
 
 const episodeImages = ref<string[]>([]);
 const episodeInfos = ref<any>({});

@@ -5,7 +5,7 @@ import EpisodeItem from "~/components/webtoons/episodes/EpisodeItem.vue";
 import {Skeleton} from "~/components/ui/skeleton";
 import EpisodeSkeleton from "~/components/webtoons/episodes/EpisodeSkeleton.vue";
 import VisibilityObserver from "~/components/utils/VisibilityObserver.vue";
-import {saveOrder} from "~/utils/storage";
+import {getOrder, saveOrder} from "~/utils/storage";
 
 useSeoMeta({
     title: "OWR",

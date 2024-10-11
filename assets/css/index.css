@@ -18,6 +18,7 @@
         --primary-foreground: 210 40% 98%;
 
         --secondary: 210 40% 96.1%;
+        --secondary-disabled: 210 40% 99%;
         --secondary-foreground: 222.2 47.4% 11.2%;
 
         --muted: 210 40% 96.1%;
@@ -49,6 +50,7 @@
         --primary-foreground:222.2 47.4% 11.2%;
 
         --secondary:217.2 32.6% 17.5%;
+        --secondary-disabled:217.2 32.6% 12%;
         --secondary-foreground:210 40% 98%;
 
         --muted:217.2 32.6% 17.5%;
