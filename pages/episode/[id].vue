@@ -60,7 +60,7 @@ async function loadEpisodeImages(){
 
 function scrollToImage(){
     const imageId = episodeImages.value[episodeProgression];
-    if(imageId < 5) return;
+    if(episodeProgression < 5) return;
     const nuxtImg = document.getElementById(imageId);
     if (nuxtImg)
         nuxtImg.scrollIntoView({behavior: "smooth"});
