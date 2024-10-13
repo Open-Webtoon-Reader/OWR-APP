@@ -30,9 +30,6 @@ function clearApiUrl(){
                             Settings
                         </NavButton>
                     </SheetClose>
-                    <Button variant="destructive" @click="clearApiUrl">
-                        API Url
-                    </Button>
                 </SheetDescription>
             </SheetHeader>
         </SheetContent>
