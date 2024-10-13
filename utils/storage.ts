@@ -1,19 +1,25 @@
-
-
 export function saveOrder(webtoonId: number, order: boolean): void{
     if(import.meta.server)
         return;
-    localStorage.setItem("order", JSON.stringify({webtoonId, order}));
+    let orders = localStorage.getItem("order");
+    if(orders){
+        orders = JSON.parse(orders);
+        orders[webtoonId] = order;
+        localStorage.setItem("order", JSON.stringify(orders));
+    } else {
+        localStorage.setItem("order", JSON.stringify({[webtoonId]: order}));
+    }
 }
 
 export function getOrder(webtoonId: number): boolean{
     if(import.meta.server)
         return;
-    const order = localStorage.getItem("order");
-    if(order){
-        const parsedOrder = JSON.parse(order);
-        if(parsedOrder.webtoonId === webtoonId)
-            return parsedOrder.order;
+    let orders = localStorage.getItem("order");
+    if(orders){
+        orders = JSON.parse(orders);
+        if(orders[webtoonId] === undefined)
+            return true;
+        return orders[webtoonId];
     }
     return true;
 }

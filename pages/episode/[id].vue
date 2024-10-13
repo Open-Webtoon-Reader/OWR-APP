@@ -2,7 +2,7 @@
 import * as apiurlMiddleware from "~/middleware/apiurl.middleware";
 import {getEpisodeImages, getEpisodeInfos} from "~/utils/api";
 import VisibilityObserver from "~/components/utils/VisibilityObserver.vue";
-import {getEpisodeProgression, startEpisode} from "~/utils/storage";
+import {getEpisodeProgression, setEpisodeProgression, startEpisode} from "~/utils/storage";
 
 definePageMeta({
     middleware: [
