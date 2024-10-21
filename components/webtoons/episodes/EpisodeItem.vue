@@ -2,13 +2,15 @@
 
 import {sumToImageUrl} from "~/utils/api";
 import {Badge} from "~/components/ui/badge";
-import {isEpisodeStarted} from "~/utils/storage";
+import {useEpisode} from "~/utils/storage";
 
 const {episode} = defineProps<{
     episode: any,
 }>();
 
-const isStarted = ref<boolean>(isEpisodeStarted(episode.id));
+const episodeStorage = useEpisode();
+
+const isStarted = ref<boolean>(episodeStorage.isEpisodeStarted(episode.id));
 
 </script>
 

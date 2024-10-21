@@ -2,7 +2,7 @@
 import * as apiurlMiddleware from "~/middleware/apiurl.middleware";
 import {getEpisodeImages, getEpisodeInfos} from "~/utils/api";
 import VisibilityObserver from "~/components/utils/VisibilityObserver.vue";
-import {getEpisodeProgression, setEpisodeProgression, startEpisode} from "~/utils/storage";
+import {useEpisode} from "~/utils/storage";
 
 definePageMeta({
     middleware: [
@@ -17,12 +17,13 @@ useSeoMeta({
 });
 
 const id = useRoute().params.id as any as number;
+const episodeStorage = useEpisode();
 
 const isCancelled = ref(false);
 new Promise((resolve) => {
     setTimeout(() => {
         if (isCancelled.value) return;
-        startEpisode(id);
+        episodeStorage.startEpisode(id);
         resolve();
     }, 2500);
 });
@@ -30,7 +31,7 @@ onBeforeRouteLeave(() => {
     isCancelled.value = true;
 });
 
-const episodeProgression = getEpisodeProgression(id);
+const episodeProgression = episodeStorage.getEpisodeProgression(id);
 
 const episodeImages = ref<string[]>([]);
 const episodeInfos = ref<any>({});
@@ -83,7 +84,7 @@ async function loadEpisodeInfos(){
 
 function updateProgression(index: number){
     if(index > 5 && index > episodeProgression)
-        setEpisodeProgression(id, index - 1);
+        episodeStorage.setEpisodeProgression(id, index - 1);
 }
 
 onMounted(async() => {
@@ -94,8 +95,14 @@ onMounted(async() => {
 
 <template>
     <div class="flex flex-col items-center w-full md:w-2/3 lg:w-1/2 xl:w-1/3">
-        <div id="header" class="flex border-[1px] border-t-0 w-full justify-center">
+        <div id="header" class="flex border-[1px] border-t-0 w-full items-center justify-around">
+            <Button variant="secondary" :disabled="!episodeInfos.previousEpisodeId" @click="navigateTo(`/episode/${episodeInfos.previousEpisodeId}`, {replace: true})">
+                <Icon name="iconoir:arrow-left"/>
+            </Button>
             <h3 class="m-2">{{ episodeInfos.title }}</h3>
+            <Button variant="secondary" :disabled="!episodeInfos.nextEpisodeId" @click="navigateTo(`/episode/${episodeInfos.nextEpisodeId}`, {replace: true})">
+                <Icon name="iconoir:arrow-right"/>
+            </Button>
         </div>
         <div v-for="(image, index) of episodeImages.slice(0, maxIndex)" :key="index" class="w-full">
             <VisibilityObserver @on-display="updateProgression(index)">
@@ -122,7 +129,7 @@ onMounted(async() => {
                 </VisibilityObserver>
             </VisibilityObserver>
         </div>
-        <div id="footer" class="w-full flex flex-row justify-between py-4 px-8 border-[1px]">
+        <div id="footer" class="w-full flex flex-row justify-around py-4 px-8 border-[1px]">
             <Button variant="secondary" :disabled="!episodeInfos.previousEpisodeId" @click="navigateTo(`/episode/${episodeInfos.previousEpisodeId}`, {replace: true})">
                 <Icon name="iconoir:arrow-left"/>
             </Button>

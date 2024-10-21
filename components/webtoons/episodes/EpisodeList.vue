@@ -5,7 +5,6 @@ import EpisodeItem from "~/components/webtoons/episodes/EpisodeItem.vue";
 import {Skeleton} from "~/components/ui/skeleton";
 import EpisodeSkeleton from "~/components/webtoons/episodes/EpisodeSkeleton.vue";
 import VisibilityObserver from "~/components/utils/VisibilityObserver.vue";
-import {getOrder, saveOrder} from "~/utils/storage";
 
 useSeoMeta({
     title: "OWR",
@@ -17,8 +16,8 @@ const id = useRoute().params.id as any as number;
 const title = ref("");
 const episodes = ref<any[]>([]);
 const maxIndex = ref<number>(30);
-const order = ref<boolean>(getOrder(id));
-
+const orderStorage = useOrder();
+const order = ref<boolean>(orderStorage.getOrder(id));
 
 function loadEpisodes(){
     const webtoonState: any = useState(`webtoon-${id}`);
@@ -48,7 +47,7 @@ function increaseMaxIndex(){
 
 function toggleOrder(){
     order.value = !order.value;
-    saveOrder(id, order.value);
+    orderStorage.saveOrder(id, order.value);
 }
 
 const orderedEpisodes = computed(() => {
