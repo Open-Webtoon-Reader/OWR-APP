@@ -16,6 +16,7 @@
     "@nuxt/image": "^1.7.0",
     "@nuxtjs/color-mode": "^3.4.1",
     "@vee-validate/zod": "^4.13.1",
+    "@vite-pwa/nuxt": "^0.10.5",
     "@vueuse/core": "^10.10.0",
     "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
