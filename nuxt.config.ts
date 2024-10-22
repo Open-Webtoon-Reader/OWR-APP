@@ -46,6 +46,9 @@ export default defineNuxtConfig({
             short_name: "OWR",
             description: "An open-source webtoon reader",
             theme_color: "#020817",
+            display: "fullscreen",
+            lang: "en",
+            orientation: "portrait",
             screenshots: [
                 {
                     src: "/screenshot.png",
