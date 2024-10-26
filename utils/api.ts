@@ -41,3 +41,37 @@ export function getEpisodeInfos(episodeId: number): Promise<any>{
 export function getEpisodeImages(episodeId: number): Promise<any>{
     return axios.get(`/webtoons/episodes/${episodeId}/images`);
 }
+
+
+// Admin API
+export function addDownload(adminKey: string, name: string, language: string): Promise<void>{
+    return axios.post("/admin/queue", {name, language}, {
+        headers: {
+            "Authorization": `Bearer ${adminKey}`
+        },
+    });
+}
+
+export function updateAll(adminKey: string): Promise<void>{
+    return axios.post("/admin/update/all", {}, {
+        headers: {
+            "Authorization": `Bearer ${adminKey}`
+        }
+    });
+}
+
+export function clearDownload(adminKey: string): Promise<void>{
+    return axios.delete("/admin/current-download", {
+        headers: {
+            "Authorization": `Bearer ${adminKey}`
+        }
+    });
+}
+
+export function clearDownloadQueue(adminKey: string): Promise<void>{
+    return axios.delete("/admin/queue", {
+        headers: {
+            "Authorization": `Bearer ${adminKey}`
+        }
+    });
+}

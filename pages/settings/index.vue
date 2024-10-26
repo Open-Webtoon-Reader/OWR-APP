@@ -37,7 +37,7 @@ function clearUserData(){
     toaster({
         title: "User data cleared!",
         description: "All user data has been cleared successfully.",
-        variant: "success",
+        variant: "default",
     });
 }
 </script>
