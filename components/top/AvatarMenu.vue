@@ -2,14 +2,14 @@
 
 import {DropdownMenu} from "~/components/ui/dropdown-menu";
 import {Avatar, AvatarImage, AvatarFallback} from "~/components/ui/avatar";
-import {getRandomThumbnail, sumToImageUrl} from "~/utils/api";
+import {useApi} from "~/composable/api";
 
-const randomAvatar = ref<string>()
+const randomAvatar = ref<string>("");
 
 onMounted(async() => {
-    const res = await getRandomThumbnail();
-    randomAvatar.value = sumToImageUrl(res.data.thumbnail)
-})
+    const api = useApi();
+    randomAvatar.value = api.sumToImageUrl((await api.getRandomThumbnail()).thumbnail);
+});
 
 </script>
 

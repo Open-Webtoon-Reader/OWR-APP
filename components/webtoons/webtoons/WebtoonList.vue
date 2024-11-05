@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {ref, computed, onMounted} from "vue";
-import {getWebtoons} from "~/utils/api";
 import WebtoonItem from "~/components/webtoons/webtoons/WebtoonItem.vue";
 import WebtoonSkeleton from "~/components/webtoons/webtoons/WebtoonSkeleton.vue";
 import VisibilityObserver from "~/components/utils/VisibilityObserver.vue";
+import {useApi} from "~/composable/api";
 
 const search = ref("");
 const webtoons = ref<any[]>([]);
@@ -18,26 +18,14 @@ function increaseMaxIndex(){
 }
 
 onMounted(async() => {
-    const webtoonsState: any = useState("webtoons");
-    if (webtoonsState.value && webtoonsState.value.length){
-        webtoons.value = webtoonsState.value;
-        return;
-    }
-    const response = await getWebtoons();
-    webtoons.value = response.data;
-    // Sort webtoons by title
-    webtoons.value.sort((a, b) => a.title.localeCompare(b.title));
-    // Then by hasNewEpisodes
-    webtoons.value.sort((a, b) => b.hasNewEpisodes - a.hasNewEpisodes);
-    // Then by isNew
-    webtoons.value.sort((a, b) => b.isNew - a.isNew);
-    webtoonsState.value = webtoons.value;
+    const api = useApi();
+    webtoons.value = (await api.getWebtoons()).value;
 });
 
 // Computed property for filtered webtoons
 const filteredWebtoons = computed(() => {
     const searchValue = search.value.toLowerCase();
-    return webtoons.value.filter(webtoon =>
+    return webtoons.value?.filter(webtoon =>
         webtoon.title.toLowerCase().includes(searchValue)
     );
 });
@@ -58,13 +46,13 @@ const filteredWebtoons = computed(() => {
         </div>
         <Separator/>
         <div id="content" class="h-full overflow-y-scroll">
-            <div v-if="!webtoons.length">
+            <div v-if="!webtoons?.length">
                 <div v-for="n in 4" :key="n">
                     <WebtoonSkeleton/>
                     <Separator/>
                 </div>
             </div>
-            <div v-for="webtoon in filteredWebtoons.slice(0, maxIndex)" id="card" :key="webtoon.id">
+            <div v-for="webtoon in filteredWebtoons?.slice(0, maxIndex)" id="card" :key="webtoon.id">
                 <WebtoonItem v-if="filteredWebtoons.indexOf(webtoon) < maxIndex - 1" :webtoon="webtoon"/>
                 <VisibilityObserver v-else @on-display="increaseMaxIndex">
                     <WebtoonItem :webtoon="webtoon"/>
