@@ -5,10 +5,11 @@ import {FormControl, FormItem, FormLabel, FormMessage, FormField} from "~/compon
 import {useForm} from "vee-validate";
 import {toTypedSchema} from "@vee-validate/zod";
 import * as z from "zod";
-import {saveToLocalStorage} from "~/utils/utils";
 import {useToast} from "~/components/ui/toast";
+import {useApi} from "~/composable/api";
 
 const router = useRouter();
+const api = useApi();
 const {toast: toaster} = useToast();
 
 const connectButtonState = ref(false);
@@ -24,8 +25,8 @@ const onSubmit = handleSubmit(async(values) => {
     const apiUrl = values.apiurl;
     if(apiUrl.endsWith("/")) // Remove last "/" if present
         values.apiurl = apiUrl.slice(0, -1);
-    if(await testApiConnection(values.apiurl)){
-        saveToLocalStorage("apiurl", values.apiurl);
+    if(await api.testConnection(values.apiurl)){
+        useCookie("apiUrl").value = values.apiurl;
         await router.push("/");
     }else{
         toaster({

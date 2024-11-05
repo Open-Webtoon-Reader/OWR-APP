@@ -1,17 +1,15 @@
-import {getFromLocalStorage, clearFromLocalStorage} from "~/utils/utils";
-import {testApiConnection} from "~/utils/api";
+import {useApi} from "~/composable/api";
 
 export default defineNuxtRouteMiddleware(async() => {
-    if(import.meta.server)
-        return;
-    const apiUrl = getFromLocalStorage("apiurl");
-    if(!apiUrl){
+    const apiUrl = useCookie("apiUrl");
+    if(!apiUrl.value){
         useState("toast").value = "not-present";
         return navigateTo("/apiurl");
     }
-    testApiConnection(apiUrl).then(result => {
+    const api = useApi();
+    api.testConnection(apiUrl).then(result => {
         if (!result){
-            clearFromLocalStorage("apiurl");
+            apiUrl.value = null;
             useState("toast").value = "invalid";
             navigateTo("/apiurl");
         }
