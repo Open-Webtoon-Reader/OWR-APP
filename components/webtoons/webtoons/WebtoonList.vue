@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import {ref, computed, onMounted} from "vue";
+import {ref, computed} from "vue";
 import WebtoonItem from "~/components/webtoons/webtoons/WebtoonItem.vue";
 import WebtoonSkeleton from "~/components/webtoons/webtoons/WebtoonSkeleton.vue";
 import VisibilityObserver from "~/components/utils/VisibilityObserver.vue";
-import {useApi} from "~/composable/api";
 
 const search = ref("");
-const webtoons = ref<any[]>([]);
+const apiUrl = useCookie("apiUrl");
+const {data: webtoons, status: webtoonsStatus} = await useFetch<any[]>(`${apiUrl.value}/api/v1/webtoons`);
 const maxIndex = ref<number>(30);
 
 function clearSearch(){
@@ -17,13 +17,10 @@ function increaseMaxIndex(){
     maxIndex.value += 30;
 }
 
-onMounted(async() => {
-    const api = useApi();
-    webtoons.value = (await api.getWebtoons()).value;
-});
-
 // Computed property for filtered webtoons
 const filteredWebtoons = computed(() => {
+    if(webtoonsStatus.value !== "success")
+        return [];
     const searchValue = search.value.toLowerCase();
     return webtoons.value?.filter(webtoon =>
         webtoon.title.toLowerCase().includes(searchValue)
@@ -46,7 +43,7 @@ const filteredWebtoons = computed(() => {
         </div>
         <Separator/>
         <div id="content" class="h-full overflow-y-scroll">
-            <div v-if="!webtoons?.length">
+            <div v-if="webtoonsStatus !== 'success'">
                 <div v-for="n in 4" :key="n">
                     <WebtoonSkeleton/>
                     <Separator/>

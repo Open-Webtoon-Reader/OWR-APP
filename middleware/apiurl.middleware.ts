@@ -8,8 +8,11 @@ export default defineNuxtRouteMiddleware(async() => {
         await $fetch(`${apiUrl.value}/api/v1/version`);
         return;
     }catch (e){
+        console.group("API URL invalid");
+        console.log("Clear cookie");
+        console.log("Error:", e);
+        console.groupEnd();
         apiUrl.value = null;
-        await new Promise((resolve) => setTimeout(resolve, 1000));
         useState("toast").value = "invalid";
         return navigateTo("/apiurl");
     }
