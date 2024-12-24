@@ -1,41 +1,33 @@
 {
-  "name": "nuxt-app",
-  "private": true,
-  "type": "module",
-  "packageManager": "pnpm@9.12.0",
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev --host",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "lint:fix": "eslint --fix ."
-  },
-  "dependencies": {
-    "@nuxt/eslint": "^0.3.13",
-    "@nuxt/image": "^1.7.0",
-    "@nuxtjs/color-mode": "^3.4.1",
-    "@vee-validate/zod": "^4.13.1",
-    "@vite-pwa/nuxt": "^0.10.5",
-    "@vueuse/core": "^10.10.0",
-    "axios": "^1.7.7",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.1",
-    "lucide-vue-next": "^0.383.0",
-    "nuxt": "^3.13.0",
-    "radix-vue": "^1.8.3",
-    "shadcn-nuxt": "^0.10.4",
-    "socket.io-client": "^4.8.1",
-    "tailwind-merge": "^2.3.0",
-    "tailwindcss-animate": "^1.0.7",
-    "vee-validate": "^4.13.1",
-    "vue": "latest",
-    "vue-router": "latest",
-    "zod": "^3.23.8"
-  },
-  "devDependencies": {
-    "@nuxtjs/tailwindcss": "^6.12.0",
-    "@vue/devtools-api": "^7.4.6",
-    "nuxt-icon": "^0.6.10"
-  }
+    "name": "nuxt-app",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "nuxt build",
+        "dev": "nuxt dev",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview",
+        "postinstall": "nuxt prepare",
+        "lint:fix": "eslint . --fix"
+    },
+    "dependencies": {
+        "@nuxt/fonts": "^0.10.3",
+        "@nuxt/icon": "^1.10.3",
+        "@nuxtjs/color-mode": "^3.5.2",
+        "@nuxtjs/tailwindcss": "^6.12.2",
+        "@tailwindcss/forms": "^0.5.9",
+        "@vueuse/nuxt": "^12.2.0",
+        "nuxt": "^3.14.1592",
+        "radix-vue": "^1.9.11",
+        "tailwind-variants": "^0.3.0",
+        "tailwindcss-animate": "^1.0.7",
+        "vue": "latest",
+        "vue-router": "latest"
+    },
+    "devDependencies": {
+        "@nuxt/eslint": "^0.7.4",
+        "@types/eslint-plugin-tailwindcss": "^3.17.0",
+        "eslint-plugin-tailwindcss": "^3.17.5",
+        "typescript": "^5.7.2"
+    }
 }
