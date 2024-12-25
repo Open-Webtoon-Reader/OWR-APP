@@ -6,8 +6,8 @@
 
 <script lang="ts">
 import {reactiveOmit} from "@vueuse/core";
-import {Primitive, useForwardProps} from "radix-vue";
 import type {PrimitiveProps} from "radix-vue";
+import {useForwardProps} from "radix-vue";
 
 export const drawerHeaderStyles = tv({
     base: "grid gap-1.5 p-4 text-center sm:text-left",

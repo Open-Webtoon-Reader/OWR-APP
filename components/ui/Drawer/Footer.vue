@@ -6,8 +6,8 @@
 
 <script lang="ts">
 import {reactiveOmit} from "@vueuse/core";
-import {Primitive, useForwardProps} from "radix-vue";
 import type {PrimitiveProps} from "radix-vue";
+import {useForwardProps} from "radix-vue";
 
 export const drawerFooterStyles = tv({
     base: "mt-auto flex flex-col gap-2 p-4",

@@ -10,8 +10,8 @@
 </template>
 
 <script lang="ts" setup>
-import {Label} from "radix-vue";
 import type {LabelProps} from "radix-vue";
+import {Label} from "radix-vue";
 
 const props = defineProps<
     LabelProps & {
