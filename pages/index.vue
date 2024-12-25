@@ -6,6 +6,16 @@ definePageMeta({
     ],
 });
 
+useHead({
+    title: "Home",
+    meta: [
+        {
+            name: "description",
+            content: "Home page",
+        },
+    ],
+});
+
 const tags = Array.from({length: 50}).map((_, i, a) => `${a.length - i}`);
 </script>
 
