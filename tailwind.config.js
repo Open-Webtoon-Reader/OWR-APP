@@ -18,7 +18,7 @@ module.exports = {
             },
             fontFamily: {
                 sans: [
-                    `Inter, ${fontFamily.sans.join(", ")}`,
+                    `Poppins, ${fontFamily.sans.join(", ")}`,
                     {
                         fontFeatureSettings: "\"cv02\",\"cv03\",\"cv04\",\"cv11\"",
                     },
