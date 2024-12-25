@@ -1,6 +1,9 @@
 <script setup lang="ts">
 definePageMeta({
     layout: "navigation",
+    middleware: [
+        "server-url-middleware",
+    ],
 });
 
 const tags = Array.from({length: 50}).map((_, i, a) => `${a.length - i}`);

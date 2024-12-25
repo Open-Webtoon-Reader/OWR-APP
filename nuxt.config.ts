@@ -9,7 +9,8 @@ export default defineNuxtConfig({
         "@vueuse/nuxt",
         "@nuxt/icon",
         "@nuxt/fonts",
-        "@nuxt/eslint"
+        "@nuxt/eslint",
+        "@vee-validate/nuxt"
     ],
 
     tailwindcss: {

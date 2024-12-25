@@ -23,9 +23,12 @@ importers:
       '@tailwindcss/forms':
         specifier: ^0.5.9
         version: 0.5.9(tailwindcss@3.4.17)
-      '@vueuse/core':
-        specifier: ^12.2.0
-        version: 12.2.0(typescript@5.7.2)
+      '@vee-validate/nuxt':
+        specifier: ^4.15.0
+        version: 4.15.0(magicast@0.3.5)(rollup@4.29.1)(vue@3.5.13(typescript@5.7.2))
+      '@vee-validate/zod':
+        specifier: ^4.15.0
+        version: 4.15.0(vue@3.5.13(typescript@5.7.2))(zod@3.24.1)
       '@vueuse/nuxt':
         specifier: ^12.2.0
         version: 12.2.0(magicast@0.3.5)(nuxt@3.14.1592(@parcel/watcher@2.5.0)(@types/node@22.10.2)(db0@0.2.1)(eslint@9.17.0(jiti@2.4.2))(ioredis@5.4.2)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.29.1)(terser@5.37.0)(typescript@5.7.2)(vite@5.4.11(@types/node@22.10.2)(terser@5.37.0)))(rollup@4.29.1)(typescript@5.7.2)
@@ -50,6 +53,9 @@ importers:
       vue-router:
         specifier: latest
         version: 4.5.0(vue@3.5.13(typescript@5.7.2))
+      zod:
+        specifier: ^3.24.1
+        version: 3.24.1
     devDependencies:
       '@iconify-json/iconoir':
         specifier: ^1.2.6
@@ -60,6 +66,9 @@ importers:
       '@types/eslint-plugin-tailwindcss':
         specifier: ^3.17.0
         version: 3.17.0
+      '@vueuse/core':
+        specifier: ^12.2.0
+        version: 12.2.0(typescript@5.7.2)
       eslint-plugin-tailwindcss:
         specifier: ^3.17.5
         version: 3.17.5(tailwindcss@3.4.17)
@@ -1218,6 +1227,14 @@ packages:
     peerDependencies:
       vue: '>=2.7 || >=3'
 
+  '@vee-validate/nuxt@4.15.0':
+    resolution: {integrity: sha512-AhQHPLxH4tTf35op+ifkBhnnRwv/EzT8Fi9PQlEwKyLGZgepFQO1qTm6IyaA6aoSKcFWHz3R3hyMrMQdXbiOxQ==}
+
+  '@vee-validate/zod@4.15.0':
+    resolution: {integrity: sha512-MpvIKiyg9X5yD8bJW0no2AU7wtR2T5mrvD9tuPRiie951sU2n6QKgMV38qKKOiqFBCxsMSjIuLLLV3V5kVE4nQ==}
+    peerDependencies:
+      zod: ^3.24.0
+
   '@vercel/nft@0.27.10':
     resolution: {integrity: sha512-zbaF9Wp/NsZtKLE4uVmL3FyfFwlpDyuymQM1kPbeT0mVOHKDQQNjnnfslB3REg3oZprmNFJuh3pkHBk2qAaizg==}
     engines: {node: '>=16'}
@@ -1282,6 +1299,9 @@ packages:
 
   '@vue/devtools-api@6.6.4':
     resolution: {integrity: sha512-sGhTPMuXqZ1rVOk32RylztWkfXTRhuS7vgAKv0zjqk8gbsHkJ7xfFf+jbySxt7tWObEJwyKaHMikV/WGDiQm8g==}
+
+  '@vue/devtools-api@7.6.8':
+    resolution: {integrity: sha512-ma6dY/sZR36zALVsV1W7eC57c6IJPXsy8SNgZn1PLVWU4z4dPn5TIBmnF4stmdJ4sQcixqKaQ8pwjbMPzEZwiA==}
 
   '@vue/devtools-core@7.6.8':
     resolution: {integrity: sha512-8X4roysTwzQ94o7IobjVcOd1aZF5iunikrMrHPI2uUdigZCi2kFTQc7ffYiFiTNaLElCpjOhCnM7bo7aK1yU7A==}
@@ -4065,6 +4085,11 @@ packages:
       radix-vue: ^1.4.0
       vue: ^3.3.0
 
+  vee-validate@4.15.0:
+    resolution: {integrity: sha512-PGJh1QCFwCBjbHu5aN6vB8macYVWrajbDvgo1Y/8fz9n/RVIkLmZCJDpUgu7+mUmCOPMxeyq7vXUOhbwAqdXcA==}
+    peerDependencies:
+      vue: ^3.4.26
+
   vite-hot-client@0.2.4:
     resolution: {integrity: sha512-a1nzURqO7DDmnXqabFOliz908FRmIppkBKsJthS8rbe8hBEXwEwe4C3Pp33Z1JoFCYfVL4kTOMLKk0ZZxREIeA==}
     peerDependencies:
@@ -4313,6 +4338,9 @@ packages:
   zip-stream@6.0.1:
     resolution: {integrity: sha512-zK7YHHz4ZXpW89AHXUPbQVGKI7uvkd3hzusTdotCg1UxyaVtg0zFJSTfW/Dq5f7OBBVnq6cZIaC8Ti4hb6dtCA==}
     engines: {node: '>= 14'}
+
+  zod@3.24.1:
+    resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
 
 snapshots:
 
@@ -5709,6 +5737,25 @@ snapshots:
       unhead: 1.11.14
       vue: 3.5.13(typescript@5.7.2)
 
+  '@vee-validate/nuxt@4.15.0(magicast@0.3.5)(rollup@4.29.1)(vue@3.5.13(typescript@5.7.2))':
+    dependencies:
+      '@nuxt/kit': 3.14.1592(magicast@0.3.5)(rollup@4.29.1)
+      local-pkg: 0.5.1
+      vee-validate: 4.15.0(vue@3.5.13(typescript@5.7.2))
+    transitivePeerDependencies:
+      - magicast
+      - rollup
+      - supports-color
+      - vue
+
+  '@vee-validate/zod@4.15.0(vue@3.5.13(typescript@5.7.2))(zod@3.24.1)':
+    dependencies:
+      type-fest: 4.30.2
+      vee-validate: 4.15.0(vue@3.5.13(typescript@5.7.2))
+      zod: 3.24.1
+    transitivePeerDependencies:
+      - vue
+
   '@vercel/nft@0.27.10(rollup@4.29.1)':
     dependencies:
       '@mapbox/node-pre-gyp': 2.0.0-rc.0
@@ -5822,6 +5869,10 @@ snapshots:
       '@vue/shared': 3.5.13
 
   '@vue/devtools-api@6.6.4': {}
+
+  '@vue/devtools-api@7.6.8':
+    dependencies:
+      '@vue/devtools-kit': 7.6.8
 
   '@vue/devtools-core@7.6.8(vite@5.4.11(@types/node@22.10.2)(terser@5.37.0))(vue@3.5.13(typescript@5.7.2))':
     dependencies:
@@ -8957,6 +9008,12 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
 
+  vee-validate@4.15.0(vue@3.5.13(typescript@5.7.2)):
+    dependencies:
+      '@vue/devtools-api': 7.6.8
+      type-fest: 4.30.2
+      vue: 3.5.13(typescript@5.7.2)
+
   vite-hot-client@0.2.4(vite@5.4.11(@types/node@22.10.2)(terser@5.37.0)):
     dependencies:
       vite: 5.4.11(@types/node@22.10.2)(terser@5.37.0)
@@ -9179,3 +9236,5 @@ snapshots:
       archiver-utils: 5.0.2
       compress-commons: 6.0.2
       readable-stream: 4.6.0
+
+  zod@3.24.1: {}
