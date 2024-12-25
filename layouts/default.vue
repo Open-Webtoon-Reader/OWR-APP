@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div class="flex max-h-dvh min-h-dvh grow flex-col">
+    <div class="flex max-h-dvh min-h-dvh w-full grow flex-col">
         <slot/>
     </div>
 </template>
