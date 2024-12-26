@@ -1,38 +1,38 @@
 <template>
-  <UiToastProvider>
-    <template v-for="toast in toasts" :key="toast.id">
-      <UiToast v-bind="toast">
-        <div class="flex gap-3">
-          <Icon
-            v-if="toast.icon"
-            :name="toast.icon"
-            class="h-5 w-5 shrink-0"
-            :class="[!!toast.title && !!toast.description && 'mt-0.5']"
-          />
-          <div class="flex flex-col gap-1">
-            <UiToastTitle v-if="toast.title" :title="toast.title" />
-            <template v-if="toast.description">
-              <UiToastDescription v-if="isVNode(toast.description)">
-                <component :is="toast.description" />
-              </UiToastDescription>
-              <UiToastDescription v-else>
-                {{ toast.description }}
-              </UiToastDescription>
-            </template>
-            <UiToastClose />
-          </div>
-        </div>
-        <component :is="toast.action" />
-      </UiToast>
-    </template>
-    <UiToastViewport />
-  </UiToastProvider>
+    <UiToastProvider>
+        <template v-for="toast in toasts" :key="toast.id">
+            <UiToast v-bind="toast">
+                <div class="flex gap-3">
+                    <Icon
+                        v-if="toast.icon"
+                        :name="toast.icon"
+                        class="size-5 shrink-0"
+                        :class="[!!toast.title && !!toast.description && 'mt-0.5']"
+                    />
+                    <div class="flex flex-col gap-1">
+                        <UiToastTitle v-if="toast.title" :title="toast.title" />
+                        <template v-if="toast.description">
+                            <UiToastDescription v-if="isVNode(toast.description)">
+                                <component :is="toast.description" />
+                            </UiToastDescription>
+                            <UiToastDescription v-else>
+                                {{ toast.description }}
+                            </UiToastDescription>
+                        </template>
+                        <UiToastClose />
+                    </div>
+                </div>
+                <component :is="toast.action" />
+            </UiToast>
+        </template>
+        <UiToastViewport />
+    </UiToastProvider>
 </template>
 
 <script lang="ts" setup>
-  import { isVNode } from "vue";
+import {isVNode} from "vue";
 
-  const { toasts } = useToast();
+const {toasts} = useToast();
 </script>
 
 <style>

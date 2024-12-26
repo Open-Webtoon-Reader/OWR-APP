@@ -13,6 +13,7 @@
     "dependencies": {
         "@nuxt/fonts": "^0.10.3",
         "@nuxt/icon": "^1.10.3",
+        "@nuxt/image": "1.8.1",
         "@nuxtjs/color-mode": "^3.5.2",
         "@nuxtjs/tailwindcss": "^6.12.2",
         "@tailwindcss/forms": "^0.5.9",
@@ -35,5 +36,6 @@
         "@vueuse/core": "^12.2.0",
         "eslint-plugin-tailwindcss": "^3.17.5",
         "typescript": "^5.7.2"
-    }
+    },
+    "packageManager": "pnpm@9.12.2+sha512.22721b3a11f81661ae1ec68ce1a7b879425a1ca5b991c975b074ac220b187ce56c708fe5db69f4c962c989452eee76c82877f4ee80f474cebd61ee13461b6228"
 }

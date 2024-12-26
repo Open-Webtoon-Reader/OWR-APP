@@ -1,31 +1,41 @@
 <script setup lang="ts">
+import WebtoonItem from "~/components/items/WebtoonItem.vue";
+
 definePageMeta({
     layout: "navigation",
     middleware: [
         "server-url-middleware",
     ],
 });
-
 useHead({
-    title: "Home",
+    title: "OWR",
     meta: [
         {
-            name: "description",
+            name: "OWR Home page",
             content: "Home page",
         },
     ],
 });
 
-const tags = Array.from({length: 50}).map((_, i, a) => `${a.length - i}`);
+const serverUrl = useLocalStorage("serverUrl", "");
+const {data: webtoons} = await useFetch<Webtoon[]>(`${serverUrl.value}/webtoons`, {cache: "reload"});
+
+const sortedWebtoons = computed(() => {
+    if(!webtoons.value)
+        return [];
+    const sortedList = [...webtoons.value];
+    sortedList.sort((a, b) => a.title.localeCompare(b.title));
+    sortedList.sort((a, b) => (+ b.hasNewEpisodes) - (+ a.hasNewEpisodes));
+    sortedList.sort((a, b) => (+ b.isNew) - (+ a.isNew));
+    return sortedList;
+});
 </script>
 
 <template>
     <UiScrollArea class="h-dvh">
         <div class="flex flex-col">
             <div class="w-full justify-center self-center sm:w-[30rem] md:w-[40rem] lg:w-[50rem]">
-                <template v-for="(tag, i) in tags" :key="i">
-                    <p class="!mt-0 border border-t-0 p-2 text-center">{{tag}}</p>
-                </template>
+                <WebtoonItem v-for="(webtoon, i) in sortedWebtoons" :key="i" :webtoon="webtoon"/>
             </div>
         </div>
     </UiScrollArea>

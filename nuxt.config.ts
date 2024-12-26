@@ -10,7 +10,8 @@ export default defineNuxtConfig({
         "@nuxt/icon",
         "@nuxt/fonts",
         "@nuxt/eslint",
-        "@vee-validate/nuxt"
+        "@vee-validate/nuxt",
+        "@nuxt/image",
     ],
 
     tailwindcss: {
