@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export function setAxiosBaseUrl(apiUrl: string){
-    axios.defaults.baseURL = `${apiUrl}/api/v1`;
+    axios.defaults.baseURL = apiUrl;
 }
 
 export async function testApiConnection(apiUrl: string): Promise<boolean>{
