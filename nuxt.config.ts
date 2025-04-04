@@ -1,7 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    compatibilityDate: "2024-11-01",
-    devtools: {enabled: true},
+    compatibilityDate: "2025-04-04",
+
+    devtools: {
+        enabled: true,
+    },
 
     modules: [
         "@nuxtjs/tailwindcss",
@@ -16,21 +19,21 @@ export default defineNuxtConfig({
 
     tailwindcss: {
         exposeConfig: true,
-        editorSupport: true
+        editorSupport: true,
     },
 
     colorMode: {
-        classSuffix: ""
+        classSuffix: "",
     },
 
     imports: {
         imports: [{
             from: "tailwind-variants",
-            name: "tv"
+            name: "tv",
         }, {
             from: "tailwind-variants",
             name: "VariantProps",
-            type: true
-        }]
-    }
+            type: true,
+        }],
+    },
 });
