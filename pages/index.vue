@@ -18,7 +18,9 @@ useHead({
 });
 
 const serverUrl = useLocalStorage("serverUrl", "");
-const {data: webtoons} = await useFetch<Webtoon[]>(`${serverUrl.value}/webtoons`, {cache: "reload"});
+const {data: webtoons} = await useAsyncData<Webtoon[]>("webtoons", () => $fetch(`${serverUrl.value}/webtoons`), {
+    server: false,
+});
 
 const sortedWebtoons = computed(() => {
     if(!webtoons.value)
@@ -34,7 +36,7 @@ const sortedWebtoons = computed(() => {
 <template>
     <UiScrollArea class="h-dvh">
         <div class="flex flex-col">
-            <div class="w-full justify-center self-center sm:w-[30rem] md:w-[40rem] lg:w-[50rem]">
+            <div class="w-full justify-center self-center md:w-[40rem] lg:w-[50rem]">
                 <WebtoonItem v-for="(webtoon, i) in sortedWebtoons" :key="i" :webtoon="webtoon"/>
             </div>
         </div>

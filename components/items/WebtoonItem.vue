@@ -20,11 +20,11 @@ const genres = computed(()=>{
 </script>
 
 <template>
-    <div class="flex w-full border border-t-0">
+    <NuxtLink class="flex border border-t-0 hover:cursor-pointer hover:bg-secondary" :to="`/webtoon/${webtoon.id}`">
         <NuxtImg :src="thumbnailUrl" loading="lazy" format="webp" class="aspect-square h-full"/>
         <div class="flex w-full flex-col items-start justify-between p-2">
             <div class="flex flex-col">
-                <div class="flex w-full items-center gap-2 sm:w-80 md:w-[30rem] lg:w-[40rem]">
+                <div class="flex w-full items-center gap-2 md:w-[30rem] lg:w-[40rem]">
                     <UiBadge v-if="props.webtoon.isNew" variant="default" class="h-max">New</UiBadge>
                     <UiBadge v-if="props.webtoon.hasNewEpisodes && !webtoon.isNew" variant="secondary" class="h-max">Updated</UiBadge>
                     <h3 class="truncate">{{webtoon.title}}</h3>
@@ -36,7 +36,7 @@ const genres = computed(()=>{
                 <UiBadge v-for="(genre, i) in genres" :key="i" variant="outline">{{genre}}</UiBadge>
             </div>
         </div>
-    </div>
+    </NuxtLink>
 </template>
 
 <style scoped>
