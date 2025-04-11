@@ -10,8 +10,8 @@
 </template>
 
 <script lang="ts" setup>
-import {ToastRoot, useForwardPropsEmits} from "radix-vue";
 import type {ToastRootEmits, ToastRootProps} from "radix-vue";
+import {ToastRoot, useForwardPropsEmits} from "radix-vue";
 
 export interface ToastProps extends ToastRootProps {
     /**

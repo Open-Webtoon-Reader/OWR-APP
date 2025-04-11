@@ -1,9 +1,8 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
-    <div class="max-h-dvh h-dvh min-h-dvh flex w-full flex-col">
+    <div class="flex h-dvh max-h-dvh min-h-dvh w-full flex-col">
+        <UiToastToaster/>
         <slot/>
     </div>
 </template>

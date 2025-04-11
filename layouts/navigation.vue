@@ -4,6 +4,21 @@ import Separator from "~/components/ui/Separator.vue";
 import {DialogDescription, DialogTitle} from "radix-vue";
 
 const isDrawerOpen = ref(false);
+
+const serverUrl = useLocalStorage("serverUrl", "");
+const authToken = useCookie("token");
+const {data: user} = await useAsyncData<any>("user", () => $fetch(`${serverUrl.value}/user/me`, {
+    headers: {
+        "Authorization": `Bearer ${authToken.value}`,
+    }
+}), {
+    server: false,
+});
+const avatarUrl = computed(() => {
+    if(!user.value)
+        return "";
+    return `${serverUrl.value}/image/v2/${user.value.avatar}`;
+});
 </script>
 
 <template>
@@ -58,8 +73,26 @@ const isDrawerOpen = ref(false);
                     </UiButton>
                 </div>
             </div>
-            <div class="flex justify-end self-center">
+            <div class="flex items-center justify-end gap-4 self-center">
                 <ThemeSwitcher/>
+                <UiSeparator orientation="vertical" class="h-10"/>
+                <UiDropdownMenu>
+                    <UiDropdownMenuTrigger>
+                        <UiAvatar
+                            :src="avatarUrl"
+                            alt="Guest"
+                            fallback="G"
+                        />
+                    </UiDropdownMenuTrigger>
+                    <UiDropdownMenuContent>
+                        <UiDropdownMenuLabel v-if="!user" label="My Account"/>
+                        <UiDropdownMenuLabel v-else :label="user.username"/>
+                        <UiDropdownMenuSeparator/>
+                        <UiDropdownMenuItem v-if="!user" icon="iconoir:log-in" @click="$router.push('/account/login')">Login</UiDropdownMenuItem>
+                        <UiDropdownMenuItem v-if="user" icon="iconoir:user" @click="$router.push('/account')">Account</UiDropdownMenuItem>
+                        <UiDropdownMenuItem v-if="user" icon="iconoir:user" @click="$router.push('/account/logout')">Logout</UiDropdownMenuItem>
+                    </UiDropdownMenuContent>
+                </UiDropdownMenu>
             </div>
         </div>
         <Separator/>

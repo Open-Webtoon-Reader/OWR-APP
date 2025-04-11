@@ -5,8 +5,8 @@
 </template>
 
 <script lang="ts" setup>
-import {ToastViewport} from "radix-vue";
 import type {ToastViewportProps} from "radix-vue";
+import {ToastViewport} from "radix-vue";
 
 const props = defineProps<
     ToastViewportProps & {

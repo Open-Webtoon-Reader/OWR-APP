@@ -5,8 +5,8 @@
 </template>
 
 <script lang="ts" setup>
-import {ToastDescription} from "radix-vue";
 import type {ToastDescriptionProps} from "radix-vue";
+import {ToastDescription} from "radix-vue";
 
 const props = defineProps<
     ToastDescriptionProps & {

@@ -5,8 +5,8 @@
 </template>
 
 <script lang="ts" setup>
-import {ToastAction} from "radix-vue";
 import type {ToastActionProps} from "radix-vue";
+import {ToastAction} from "radix-vue";
 
 const props = withDefaults(
     defineProps<

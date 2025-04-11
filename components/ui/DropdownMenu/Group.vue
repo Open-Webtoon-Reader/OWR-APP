@@ -1,0 +1,12 @@
+<template>
+    <DropdownMenuGroup v-bind="props">
+        <slot />
+    </DropdownMenuGroup>
+</template>
+
+<script lang="ts" setup>
+import type {DropdownMenuGroupProps} from "radix-vue";
+import {DropdownMenuGroup} from "radix-vue";
+
+const props = defineProps<DropdownMenuGroupProps>();
+</script>
