@@ -17,7 +17,7 @@ const {data: episodes} = await useAsyncData<Episode[]>("episodes", () => $fetch(
     server: false,
 });
 
-const displayCount = ref(25);
+const displayCount = ref(50);
 const displayedEpisodes = computed(() => {
     if(!episodes.value)
         return [];
@@ -37,12 +37,12 @@ function toggleIncreasing(){
     <UiScrollArea class="h-dvh">
         <div class="flex flex-col">
             <div class="w-full justify-center self-center md:w-[40rem] lg:w-[50rem]">
-                <div class="border-top-none grid grid-cols-3 items-center border p-4">
+                <div class="border-top-none grid grid-cols-6 items-center border p-4">
                     <UiButton class="aspect-square" @click="toggleIncreasing">
                         <Icon v-if="isIncreasing" name="iconoir:filter-list" class="size-6 rotate-180"/>
                         <Icon v-else name="iconoir:filter-list" class="size-6"/>
                     </UiButton>
-                    <h3 class="text-center">{{webtoon?.title}}</h3>
+                    <h3 class="col-span-4 text-center">{{webtoon?.title}}</h3>
                     <div/>
                 </div>
                 <EpisodeItem v-for="(episode, i) in displayedEpisodes" :key="i" :episode="episode"/>

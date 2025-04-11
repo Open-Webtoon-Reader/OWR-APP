@@ -5,8 +5,8 @@
 </template>
 
 <script lang="ts" setup>
-import {DialogTitle} from "radix-vue";
 import type {DialogTitleProps} from "radix-vue";
+import {DialogTitle} from "radix-vue";
 
 const props = defineProps<
     DialogTitleProps & {

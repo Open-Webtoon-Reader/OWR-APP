@@ -5,8 +5,8 @@
 </template>
 
 <script lang="ts" setup>
-import {DialogDescription} from "radix-vue";
 import type {DialogDescriptionProps} from "radix-vue";
+import {DialogDescription} from "radix-vue";
 
 const props = defineProps<
     DialogDescriptionProps & {

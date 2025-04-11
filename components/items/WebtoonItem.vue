@@ -4,7 +4,15 @@ const props = defineProps<{
 }>();
 
 const serverUrl = useLocalStorage("serverUrl", "");
-const thumbnailUrl = `${serverUrl.value}/image/${props.webtoon.thumbnail}`;
+const fallback = ref(false);
+const thumbnails = computed(() => {
+    if(!props.webtoon.thumbnail)
+        return [];
+    return [
+        `${serverUrl.value}/image/v2/${props.webtoon.thumbnail}`,
+        `${serverUrl.value}/image/${props.webtoon.thumbnail}`,
+    ];
+});
 
 const genres = computed(()=>{
     return props.webtoon.genres.map((genre: string) => {
@@ -21,7 +29,8 @@ const genres = computed(()=>{
 
 <template>
     <NuxtLink class="flex border border-t-0 hover:cursor-pointer hover:bg-secondary" :to="`/webtoon/${webtoon.id}`">
-        <NuxtImg :src="thumbnailUrl" loading="lazy" format="webp" class="aspect-square h-full"/>
+        <NuxtImg v-if="!fallback" :src="thumbnails[0]" loading="lazy" format="webp" class="aspect-square h-full" @error="fallback = true"/>
+        <NuxtImg v-else :src="thumbnails[1]" loading="lazy" format="webp" class="aspect-square h-full"/>
         <div class="flex w-full flex-col items-start justify-between p-2">
             <div class="flex flex-col">
                 <div class="flex w-full items-center gap-2 md:w-[30rem] lg:w-[40rem]">
@@ -38,7 +47,3 @@ const genres = computed(()=>{
         </div>
     </NuxtLink>
 </template>
-
-<style scoped>
-
-</style>

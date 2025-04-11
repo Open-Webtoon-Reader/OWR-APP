@@ -3,8 +3,8 @@
 </template>
 
 <script lang="ts" setup>
-import {DialogOverlay} from "radix-vue";
 import type {DialogOverlayProps} from "radix-vue";
+import {DialogOverlay} from "radix-vue";
 
 const props = defineProps<
     DialogOverlayProps & {

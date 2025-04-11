@@ -29,9 +29,8 @@
 </template>
 
 <script lang="ts" setup>
-import {DialogContent, useForwardPropsEmits} from "radix-vue";
 import type {DialogContentEmits, DialogContentProps} from "radix-vue";
-import {reactiveOmit} from "@vueuse/core";
+import {DialogContent, useForwardPropsEmits} from "radix-vue";
 
 defineOptions({inheritAttrs: false});
 
