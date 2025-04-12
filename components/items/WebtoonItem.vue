@@ -2,8 +2,13 @@
 import Image from "~/components/misc/Image.vue";
 
 const props = defineProps<{
-    webtoon: Webtoon
+    webtoon: Webtoon,
+    liked: boolean,
 }>();
+
+const likedState = ref(props.liked);
+const emits = defineEmits(["like", "unlike"]);
+const cookieToken = useCookie("token");
 
 const genres = computed(()=>{
     return props.webtoon.genres.map((genre: string) => {
@@ -16,24 +21,43 @@ const genres = computed(()=>{
         return genre;
     });
 });
+
+function toggleLike(){
+    if (likedState.value){
+        emits("unlike", props.webtoon.id);
+    } else {
+        emits("like", props.webtoon.id);
+    }
+    likedState.value = !likedState.value;
+}
 </script>
 
 <template>
-    <NuxtLink class="flex border border-t-0 hover:cursor-pointer hover:bg-secondary" :to="`/webtoon/${webtoon.id}`">
+    <NuxtLink class="flex w-full border border-t-0 hover:cursor-pointer hover:bg-secondary" :to="`/webtoon/${webtoon.id}`">
         <Image :sum="webtoon.thumbnail"/>
-        <div class="flex w-full flex-col items-start justify-between p-2">
-            <div class="flex flex-col">
-                <div class="flex w-full items-center gap-2 md:w-[30rem] lg:w-[40rem]">
-                    <UiBadge v-if="props.webtoon.isNew" variant="default" class="h-max">New</UiBadge>
-                    <UiBadge v-if="props.webtoon.hasNewEpisodes && !webtoon.isNew" variant="secondary" class="h-max">Updated</UiBadge>
-                    <h3 class="truncate">{{webtoon.title}}</h3>
+        <div class="flex w-full min-w-0 flex-1 flex-col items-start justify-between p-2">
+            <div class="flex w-full flex-col">
+                <div class="flex w-full min-w-0 items-center gap-2">
+                    <UiBadge v-if="props.webtoon.isNew" variant="default" class="h-max shrink-0">New</UiBadge>
+                    <UiBadge v-if="props.webtoon.hasNewEpisodes && !webtoon.isNew" variant="secondary" class="h-max shrink-0">Updated</UiBadge>
+                    <h3 class="min-w-0 flex-1 truncate">{{webtoon.title}}</h3>
                 </div>
-                <p>{{webtoon.author}}</p>
+                <p class="truncate">{{webtoon.author}}</p>
             </div>
-            <div class="flex gap-2">
-                <UiBadge variant="secondary">{{webtoon.language.toUpperCase()}}</UiBadge>
-                <UiBadge v-for="(genre, i) in genres" :key="i" variant="outline">{{genre}}</UiBadge>
+            <div class="flex w-full gap-2 overflow-x-hidden">
+                <UiBadge variant="secondary" class="shrink-0">{{webtoon.language.toUpperCase()}}</UiBadge>
+                <div class="flex flex-nowrap gap-2 overflow-x-hidden">
+                    <UiBadge v-for="(genre, i) in genres" :key="i" variant="outline" class="shrink-0 whitespace-nowrap">
+                        {{genre}}
+                    </UiBadge>
+                </div>
             </div>
+        </div>
+        <div v-if="cookieToken" class="flex items-center p-2">
+            <UiButton variant="outline" @click.stop.prevent="toggleLike">
+                <Icon v-if="likedState" class="size-4 lg:size-5" name="iconoir:heart-solid"/>
+                <Icon v-else class="size-4 lg:size-5" name="iconoir:heart"/>
+            </UiButton>
         </div>
     </NuxtLink>
 </template>

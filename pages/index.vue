@@ -37,7 +37,7 @@ const sortedWebtoons = computed(() => {
     <UiScrollArea class="h-dvh">
         <div class="flex flex-col">
             <div class="w-full justify-center self-center md:w-[40rem] lg:w-[50rem]">
-                <WebtoonItem v-for="(webtoon, i) in sortedWebtoons" :key="i" :webtoon="webtoon"/>
+                <WebtoonItem v-for="(webtoon, i) in sortedWebtoons" :key="i" :webtoon="webtoon" :liked="false"/>
             </div>
         </div>
     </UiScrollArea>
