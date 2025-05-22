@@ -21,6 +21,17 @@ const serverUrl = useLocalStorage("serverUrl", "");
 const {data: webtoons} = await useAsyncData<Webtoon[]>("webtoons", () => $fetch(`${serverUrl.value}/webtoons`), {
     server: false,
 });
+const token = useCookie("token").value;
+const {data: likes} = await useAsyncData<number[]>("likes", async() => {
+    if(!token) return [];
+    try{
+        return await $fetch(`${serverUrl.value}/user/likes/webtoons`, {
+            headers: {Authorization: `Bearer ${token}`}
+        });
+    }catch{
+        return [];
+    }
+}, {server: false});
 
 const sortedWebtoons = computed(() => {
     if(!webtoons.value)
@@ -36,8 +47,8 @@ const sortedWebtoons = computed(() => {
 <template>
     <UiScrollArea class="h-dvh">
         <div class="flex flex-col">
-            <div class="w-full justify-center self-center md:w-[40rem] lg:w-[50rem]">
-                <WebtoonItem v-for="(webtoon, i) in sortedWebtoons" :key="i" :webtoon="webtoon" :liked="false"/>
+            <div v-if="likes !== null" class="w-full justify-center self-center md:w-[40rem] lg:w-[50rem]">
+                <WebtoonItem v-for="(webtoon, i) in sortedWebtoons" :key="i" :webtoon="webtoon" :liked="likes.indexOf(webtoon.id) !== -1" />
             </div>
         </div>
     </UiScrollArea>

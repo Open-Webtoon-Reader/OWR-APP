@@ -7,7 +7,6 @@ const props = defineProps<{
 }>();
 
 const likedState = ref(props.liked);
-const emits = defineEmits(["like", "unlike"]);
 const cookieToken = useCookie("token");
 
 const genres = computed(()=>{
@@ -22,13 +21,14 @@ const genres = computed(()=>{
     });
 });
 
-function toggleLike(){
-    if (likedState.value){
-        emits("unlike", props.webtoon.id);
-    } else {
-        emits("like", props.webtoon.id);
-    }
+async function toggleLike(){
     likedState.value = !likedState.value;
+    await $fetch(`${useLocalStorage("serverUrl", "").value}/user/likes/webtoon/${props.webtoon.id}`, {
+        method: likedState.value ? "POST" : "DELETE",
+        headers: {
+            Authorization: `Bearer ${cookieToken.value}`,
+        },
+    });
 }
 </script>
 
