@@ -8,6 +8,7 @@ const props = defineProps<{
 
 const likedState = ref(props.liked);
 const cookieToken = useCookie("token");
+const emits = defineEmits(["update:liked"]);
 
 const genres = computed(()=>{
     return props.webtoon.genres.map((genre: string) => {
@@ -29,6 +30,7 @@ async function toggleLike(){
             Authorization: `Bearer ${cookieToken.value}`,
         },
     });
+    emits("update:liked", props.webtoon.id, likedState.value);
 }
 </script>
 

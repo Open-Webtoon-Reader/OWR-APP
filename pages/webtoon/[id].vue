@@ -11,6 +11,8 @@ definePageMeta({
 
 const id = useRoute().params.id;
 const serverUrl = useLocalStorage("serverUrl", "");
+const sortOrderStorage = useLocalStorage<Record<string, boolean>>("webtoonSortOrder", {});
+
 const {data: webtoon} = await useAsyncData<Webtoon>(`webtoon-${id}`, () => $fetch(`${serverUrl.value}/webtoons/${id}`), {
     server: false,
 });
@@ -41,7 +43,17 @@ const displayedEpisodes = computed(() => {
     return episodes.value.slice(0, displayCount.value);
 });
 
-const isIncreasing = ref<boolean>(false);
+const isIncreasing = computed({
+    get(){
+        return sortOrderStorage.value[id] ?? false;
+    },
+    set(value: boolean){
+        sortOrderStorage.value = {
+            ...sortOrderStorage.value,
+            [id]: value
+        };
+    }
+});
 
 function toggleIncreasing(){
     isIncreasing.value = !isIncreasing.value;
@@ -80,16 +92,17 @@ onMounted(() => {
 });
 </script>
 
-
 <template>
     <UiScrollArea class="h-dvh">
         <div class="flex flex-col">
             <div class="w-full justify-center self-center md:w-[40rem] lg:w-[50rem]">
                 <div class="sticky top-0 z-10 grid grid-cols-6 items-center border border-t-0 bg-background p-4">
-                    <UiButton variant="outline" class="w-max" @click="toggleIncreasing">
-                        <Icon v-if="isIncreasing" name="iconoir:filter-list" class="size-6 rotate-180"/>
-                        <Icon v-else name="iconoir:filter-list" class="size-6"/>
-                    </UiButton>
+                    <ClientOnly>
+                        <UiButton variant="outline" class="w-max" @click="toggleIncreasing">
+                            <Icon v-if="isIncreasing" name="iconoir:filter-list" class="size-6 rotate-180"/>
+                            <Icon v-else name="iconoir:filter-list" class="size-6"/>
+                        </UiButton>
+                    </ClientOnly>
                     <h3 class="col-span-4 truncate p-2 text-center">{{webtoon?.title}}</h3>
                     <div class="flex w-full justify-end">
                         <UiButton class="w-max" @click="resume">

@@ -21,6 +21,7 @@
         "@vee-validate/zod": "^4.15.0",
         "@vueuse/integrations": "^13.2.0",
         "@vueuse/nuxt": "^13.2.0",
+        "debounce": "^2.2.0",
         "focus-trap": "^7.6.4",
         "nuxt": "^3.17.4",
         "radix-vue": "^1.9.17",
