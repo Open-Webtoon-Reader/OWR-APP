@@ -16,3 +16,12 @@ export interface Episode{
     isNew: boolean
     thumbnail: string;
 }
+
+export interface EpisodeWithProgression extends Episode{
+    progression?: number;
+}
+
+export interface Progression{
+    episodeId: string;
+    progression: number;
+}

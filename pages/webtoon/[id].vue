@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import EpisodeItem from "~/components/items/EpisodeItem.vue";
+import type {EpisodeWithProgression} from "~/utils/types";
 
 definePageMeta({
     layout: "navigation",
@@ -10,17 +11,31 @@ definePageMeta({
 
 const id = useRoute().params.id;
 const serverUrl = useLocalStorage("serverUrl", "");
-const {data: webtoon} = await useAsyncData<Webtoon>("webtoon", () => $fetch(`${serverUrl.value}/webtoons/${id}`), {
+const {data: webtoon} = await useAsyncData<Webtoon>(`webtoon-${id}`, () => $fetch(`${serverUrl.value}/webtoons/${id}`), {
     server: false,
 });
-const {data: episodes} = await useAsyncData<Episode[]>("episodes", () => $fetch(`${serverUrl.value}/webtoons/${id}/episodes`), {
+const {data: episodes} = await useAsyncData<EpisodeWithProgression[]>(`episodes-${id}`, () => $fetch(`${serverUrl.value}/webtoons/${id}/episodes`), {
     server: false,
 });
+const token = useCookie("token").value;
+const {data: progressions} = await useAsyncData<Progression[]>(`progressions-${id}`, async() => {
+    if(!token) return [];
+    try{
+        return await $fetch(`${serverUrl.value}/user/progression/webtoon/${id}`, {
+            headers: {Authorization: `Bearer ${token}`}
+        });
+    }catch{
+        return [];
+    }
+}, {server: false});
 
-const displayCount = ref(50);
+const displayCount = ref(15);
 const displayedEpisodes = computed(() => {
     if(!episodes.value)
         return [];
+    episodes.value.forEach((episode) => {
+        episode.progression = progressions.value?.find((progression) => progression.episodeId === episode.id)?.progression ?? 0;
+    });
     if(isIncreasing.value)
         return episodes.value.slice(-displayCount.value).reverse();
     return episodes.value.slice(0, displayCount.value);
@@ -35,7 +50,36 @@ function toggleIncreasing(){
 function resume(){
     // TODO: Implement resume
 }
+
+const hasMore = computed(() => {
+    return episodes.value && displayCount.value < episodes.value.length;
+});
+
+const sentinel = ref<HTMLElement | null>(null);
+let observer: IntersectionObserver;
+
+onMounted(() => {
+    observer = new IntersectionObserver((entries) => {
+        if(entries[0].isIntersecting && hasMore.value)
+            displayCount.value += 15;
+    }, {
+        root: document.querySelector(".h-dvh"),
+        rootMargin: "0px 0px 100px 0px"
+    });
+
+    watchEffect(() => {
+        if(sentinel.value && hasMore.value)
+            observer.observe(sentinel.value);
+        else if (sentinel.value)
+            observer.unobserve(sentinel.value);
+    });
+
+    onBeforeUnmount(() => {
+        observer.disconnect();
+    });
+});
 </script>
+
 
 <template>
     <UiScrollArea class="h-dvh">
@@ -54,6 +98,7 @@ function resume(){
                     </div>
                 </div>
                 <EpisodeItem v-for="(episode, i) in displayedEpisodes" :key="i" :episode="episode"/>
+                <div v-if="hasMore" ref="sentinel" class="h-1 w-full"/>
             </div>
         </div>
     </UiScrollArea>

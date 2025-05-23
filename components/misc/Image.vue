@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const props = defineProps<{
-    sum: string
+    sum: string,
+    width?: number,
+    height?: number,
 }>();
 
 const serverUrl = useLocalStorage("serverUrl", "");
@@ -16,8 +18,8 @@ const thumbnails = computed(() => {
 </script>
 
 <template>
-    <NuxtImg v-if="!fallback" :src="thumbnails[0]" loading="lazy" format="webp" class="aspect-square h-full" @error="fallback = true"/>
-    <NuxtImg v-else :src="thumbnails[1]" loading="lazy" format="webp" class="aspect-square h-full"/>
+    <NuxtImg v-if="!fallback" :src="thumbnails[0]" loading="lazy" format="webp" class="h-full" :height :width @error="fallback = true"/>
+    <NuxtImg v-else :src="thumbnails[1]" loading="lazy" format="webp" class="h-full" :height :width/>
 </template>
 
 <style scoped>
