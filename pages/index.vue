@@ -59,7 +59,7 @@ const sortedWebtoons = computed(() => {
 
 const isWebtoonLiked = computed(() => {
     if (!likes.value || !webtoons.value) return {};
-    const likedWebtoons = {};
+    const likedWebtoons: any = {};
     for (const id of likes.value)
         likedWebtoons[id] = true;
     for (const webtoon of webtoons.value)
@@ -90,7 +90,7 @@ function likedStateChange(webtoonId: number, newState: boolean){
                     v-for="webtoon in sortedWebtoons"
                     :key="webtoon.id"
                     :webtoon="webtoon"
-                    :liked="isWebtoonLiked[webtoon.id]"
+                    :liked="isWebtoonLiked[webtoon.id] || false"
                     @update:liked="likedStateChange"
                 />
             </div>

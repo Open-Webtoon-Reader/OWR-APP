@@ -18,7 +18,6 @@ const displayCount = ref(10);
 const sentinel = ref<HTMLElement | null>(null);
 let observer: IntersectionObserver;
 const imageRefs = ref<HTMLElement[]>([]);
-const isFirstSave = ref(true);
 
 const {data: episode} = await useAsyncData<EpisodeWithProgression>(
     `episode-${id}`,
@@ -30,7 +29,6 @@ const {data: images} = await useAsyncData<string[]>(
 
 const token = useCookie("token").value;
 const {data: currentProgression} = await useAsyncData<number>(`progression-${id}`, async() => {
-    // TODO: Implement local storage saving
     if(!token) return 0;
     try{
         const progression = await $fetch<Progression>(`${serverUrl.value}/user/progression/episode/${id}`, {
@@ -41,7 +39,6 @@ const {data: currentProgression} = await useAsyncData<number>(`progression-${id}
         displayCount.value += progression.progression;
         return progression.progression;
     }catch{
-        firstTimeScroll.value = true;
         return 0;
     }
 }, {server: false});
@@ -52,34 +49,6 @@ const displayedImages = computed(() => {
 
 const hasMore = computed(() => {
     return images.value && displayCount.value < images.value.length;
-});
-
-onMounted(() => {
-    setTimeout(() => {
-        if(!currentProgression.value && currentProgression.value <= 0)
-            return;
-        triggerScroll(currentProgression.value);
-    }, 100);
-    observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore.value){
-            displayCount.value += 10;
-        }
-    }, {
-        root: document.querySelector(".flex-1"),
-        rootMargin: "100px 0px"
-    });
-
-    watchEffect(() => {
-        if (sentinel.value && hasMore.value){
-            observer.observe(sentinel.value);
-        } else if (sentinel.value){
-            observer.unobserve(sentinel.value);
-        }
-    });
-
-    onBeforeUnmount(() => {
-        observer.disconnect();
-    });
 });
 
 async function saveProgressionAPI(progress: number){
@@ -99,54 +68,80 @@ async function saveProgressionAPI(progress: number){
     });
 }
 
-
-// Configuration initiale du debounce
 const debouncedSetProgression = debounce((progress: number) => {
-    if(isFirstSave.value)
-        return;
     saveProgressionAPI(progress);
 }, 250);
 
-const firstTimeScroll = ref(false);
+let triggeredScroll = false;
+function tryTriggerScroll(){
+    if(!triggeredScroll
+        && currentProgression.value
+        && currentProgression.value !== 0
+        && imageRefs.value[currentProgression.value]
+    ){
+        triggerScroll(currentProgression.value);
+        triggeredScroll = true;
+    }
+}
 function triggerScroll(value: number){
     setTimeout(() => {
-        firstTimeScroll.value = true;
         imageRefs.value[value]?.scrollIntoView({
             behavior: "smooth",
             block: "start"
         });
     }, 100);
 }
-watch([currentProgression, images], ([newValue]) => {
-    if(!firstTimeScroll.value && imageRefs.value[newValue])
-        triggerScroll(Math.max(newValue - 2, 0));
-});
+
+// Scroll to the current progression if it exists
+watch([currentProgression, imageRefs], ([newCurrentProgression]) => {
+    if(newCurrentProgression === 1)
+        triggeredScroll = true;
+    tryTriggerScroll();
+}, {immediate: true});
 
 onMounted(() => {
+    // Trigger scroll after 500ms to current progression if it exists
     setTimeout(() => {
-        saveProgressionAPI(currentProgression.value || 0);
-        isFirstSave.value = false;
-    }, 2000);
-
+        tryTriggerScroll();
+    }, 100);
+    // Progression observers
     const imageObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting){
+            if(entry.isIntersecting){
                 const index = imageRefs.value.indexOf(entry.target as HTMLElement);
-                if (index > currentProgression.value){
+                if(index > (currentProgression.value || 0)){
                     currentProgression.value = index;
                     debouncedSetProgression(index);
                 }
             }
         });
     }, {root: document.querySelector(".flex-1"), threshold: 0.1});
-
     imageRefs.value.forEach(el => el && imageObserver.observe(el));
     watch(imageRefs, (newRefs) => {
         newRefs.forEach(el => el && imageObserver.observe(el));
     }, {deep: true});
-
     onBeforeUnmount(() => {
         imageObserver.disconnect();
+    });
+
+    // Sentinel observer
+    observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore.value){
+            displayCount.value += 10;
+        }
+    }, {
+        root: document.querySelector(".flex-1"),
+        rootMargin: "100px 0px"
+    });
+    watchEffect(() => {
+        if (sentinel.value && hasMore.value){
+            observer.observe(sentinel.value);
+        } else if (sentinel.value){
+            observer.unobserve(sentinel.value);
+        }
+    });
+    onBeforeUnmount(() => {
+        observer.disconnect();
     });
 });
 </script>
