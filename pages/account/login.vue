@@ -2,7 +2,11 @@
 import {UseFocusTrap} from "@vueuse/integrations/useFocusTrap/component";
 
 definePageMeta({
-    middleware: ["logout-middleware"],
+    layout: "navigation",
+    middleware: [
+        "logout-middleware",
+        "server-url-middleware",
+    ],
 });
 
 const router = useRouter();

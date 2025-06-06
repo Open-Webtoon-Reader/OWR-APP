@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import Default from "~/layouts/default.vue";
 import Separator from "~/components/ui/Separator.vue";
-import {DialogDescription, DialogTitle} from "radix-vue";
+import {DialogTitle} from "radix-vue";
 
 const isDrawerOpen = ref(false);
 
 const serverUrl = useLocalStorage("serverUrl", "");
 const authToken = useCookie("token");
-const {data: user} = await useAsyncData<any>("user", () => $fetch(`${serverUrl.value}/user/me`, {
+const {data: user, refresh: refreshUser} = await useAsyncData<any>("user", () => $fetch(`${serverUrl.value}/user/me`, {
     headers: {
         "Authorization": `Bearer ${authToken.value}`,
     }
@@ -16,9 +16,31 @@ const {data: user} = await useAsyncData<any>("user", () => $fetch(`${serverUrl.v
 });
 const avatarUrl = computed(() => {
     if(!user.value)
-        return "";
+        return null;
     return `${serverUrl.value}/image/v2/${user.value.avatar}`;
 });
+
+// Refresh user data when authToken changes
+watch(authToken, async() => {
+    if (authToken.value){
+        await refreshUser();
+    } else {
+        user.value = null;
+    }
+});
+
+function logout(){
+    authToken.value = "";
+    useToast().toast({
+        title: "Logged out",
+        description: "You have been logged out",
+        variant: "default",
+        icon: "iconoir:check",
+    });
+    setTimeout(async() => {
+        await navigateTo("/");
+    }, 100);
+}
 </script>
 
 <template>
@@ -35,6 +57,7 @@ const avatarUrl = computed(() => {
                         side="left"
                         title="Open Webtoon Reader"
                         description="Open Webtoon Reader"
+                        class="flex flex-col gap-2"
                     >
                         <DialogTitle>
                             <div class="flex grow items-center justify-between">
@@ -44,13 +67,45 @@ const avatarUrl = computed(() => {
                                 </UiButton>
                             </div>
                         </DialogTitle>
-                        <DialogDescription/>
-                        <div class="flex flex-col justify-center gap-2 p-2">
+                        <div class="flex grow flex-col gap-2 p-2">
                             <UiButton variant="link" class="size-max" as-child @click="isDrawerOpen = false">
                                 <NuxtLink to="/" class="flex gap-2">
                                     <Icon name="iconoir:home" class="size-5"/>
                                     Home
                                 </NuxtLink>
+                            </UiButton>
+                        </div>
+                        <UiSeparator/>
+                        <div class="flex flex-col gap-2">
+                            <div class="flex w-full items-center gap-3 pb-2 pl-2">
+                                <UiAvatar
+                                    :src="avatarUrl"
+                                    alt="Guest"
+                                    fallback="G"
+                                />
+                                <p class="font-bold">{{user?.user?.username || 'Guest'}}</p>
+                            </div>
+                            <UiButton v-if="!user" variant="link" class="size-max" as-child @click="isDrawerOpen = false">
+                                <NuxtLink to="/account/login" class="flex gap-2">
+                                    <Icon name="iconoir:log-in" class="size-5"/>
+                                    Login
+                                </NuxtLink>
+                            </UiButton>
+                            <UiButton v-if="user?.admin" variant="link" class="size-max" as-child @click="isDrawerOpen = false">
+                                <NuxtLink to="/admin" class="flex gap-2">
+                                    <Icon name="iconoir:apple-shortcuts" class="size-5"/>
+                                    Administration
+                                </NuxtLink>
+                            </UiButton>
+                            <UiButton v-if="user" variant="link" class="size-max" as-child @click="isDrawerOpen = false">
+                                <NuxtLink to="/account" class="flex gap-2">
+                                    <Icon name="iconoir:user" class="size-5"/>
+                                    Account
+                                </NuxtLink>
+                            </UiButton>
+                            <UiButton v-if="user" variant="link" class="size-max" as-child @click="isDrawerOpen = false;logout()">
+                                <Icon name="iconoir:log-out" class="size-5"/>
+                                Logout
                             </UiButton>
                         </div>
                     </UiSheetContent>
@@ -85,12 +140,12 @@ const avatarUrl = computed(() => {
                         />
                     </UiDropdownMenuTrigger>
                     <UiDropdownMenuContent>
-                        <UiDropdownMenuLabel v-if="!user" label="My Account"/>
-                        <UiDropdownMenuLabel v-else :label="user.username"/>
+                        <UiDropdownMenuLabel :label="user?.username || 'Guest'"/>
                         <UiDropdownMenuSeparator/>
-                        <UiDropdownMenuItem v-if="!user" icon="iconoir:log-in" @click="$router.push('/account/login')">Login</UiDropdownMenuItem>
-                        <UiDropdownMenuItem v-if="user" icon="iconoir:user" @click="$router.push('/account')">Account</UiDropdownMenuItem>
-                        <UiDropdownMenuItem v-if="user" icon="iconoir:user" @click="$router.push('/account/logout')">Logout</UiDropdownMenuItem>
+                        <UiDropdownMenuItem v-if="!user" icon="iconoir:log-in" title="Login" @click="$router.push('/account/login')"/>
+                        <UiDropdownMenuItem v-if="user?.admin" icon="iconoir:apple-shortcuts" title="Administration" @click="$router.push('/admin')"/>
+                        <UiDropdownMenuItem v-if="user" icon="iconoir:user" title="Account" @click="$router.push('/account')"/>
+                        <UiDropdownMenuItem v-if="user" icon="iconoir:log-out" title="Logout" @click="logout"/>
                     </UiDropdownMenuContent>
                 </UiDropdownMenu>
             </div>

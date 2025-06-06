@@ -9,7 +9,9 @@ definePageMeta({
 </script>
 
 <template>
-
+    <UiCard>
+        Temp
+    </UiCard>
 </template>
 
 <style scoped>
