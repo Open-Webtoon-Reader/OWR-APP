@@ -80,10 +80,10 @@ function logout(){
                             <div class="flex w-full items-center gap-3 pb-2 pl-2">
                                 <UiAvatar
                                     :src="avatarUrl"
-                                    alt="Guest"
+                                    :alt="user?.username || 'Guest'"
                                     fallback="G"
                                 />
-                                <p class="font-bold">{{user?.user?.username || 'Guest'}}</p>
+                                <p class="font-bold">{{user?.username || 'Guest'}}</p>
                             </div>
                             <UiButton v-if="!user" variant="link" class="size-max" as-child @click="isDrawerOpen = false">
                                 <NuxtLink to="/account/login" class="flex gap-2">
@@ -135,7 +135,7 @@ function logout(){
                     <UiDropdownMenuTrigger>
                         <UiAvatar
                             :src="avatarUrl"
-                            alt="Guest"
+                            :alt="user?.username || 'Guest'"
                             fallback="G"
                         />
                     </UiDropdownMenuTrigger>

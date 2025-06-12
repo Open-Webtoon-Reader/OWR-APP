@@ -170,6 +170,7 @@ onMounted(() => {
                     class="w-full"
                     :width="800"
                     :height="1280"
+                    not-square
                 />
             </div>
             <div
