@@ -37,7 +37,7 @@ const {data: currentProgression} = await useAsyncData<number>(`progression-${id}
         if(!progression)
             return 0;
         displayCount.value += progression.progression;
-        return progression.progression - 2; // -2 because we want to start from the first image
+        return progression.progression - 3 >= 0 ? progression.progression - 3 : 0; // -2 because we want to start from the first image
     }catch{
         return 0;
     }

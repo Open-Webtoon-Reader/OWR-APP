@@ -130,7 +130,7 @@ function likedStateChange(webtoonId: number, newState: boolean){
             <Icon name="iconoir:xmark" class="size-6"/>
         </UiButton>
     </div>
-    <UiScrollArea class="h-dvh">
+    <UiScrollArea>
         <div class="flex flex-col">
             <div v-if="likes !== null" class="w-full justify-center self-center md:w-[40rem] lg:w-[50rem]">
                 <WebtoonItem
