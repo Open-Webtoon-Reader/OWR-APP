@@ -19,7 +19,7 @@ const sentinel = ref<HTMLElement | null>(null);
 let observer: IntersectionObserver;
 const imageRefs = ref<HTMLElement[]>([]);
 
-const {data: episode} = await useAsyncData<EpisodeWithProgression>(
+const {data: episode} = await useAsyncData<EpisodeData>(
     `episode-${id}`,
     () => $fetch(`${serverUrl.value}/webtoons/episodes/${id}`), {server: false});
 
@@ -37,7 +37,7 @@ const {data: currentProgression} = await useAsyncData<number>(`progression-${id}
         if(!progression)
             return 0;
         displayCount.value += progression.progression;
-        return progression.progression;
+        return progression.progression - 2; // -2 because we want to start from the first image
     }catch{
         return 0;
     }
@@ -156,7 +156,7 @@ onMounted(() => {
                 <h1 class="text-xl font-semibold">{{ episode?.title }}</h1>
             </NuxtLink>
         </div>
-        <div class="flex w-full flex-col md:w-2/3 lg:w-1/2 xl:w-1/3">
+        <div class="flex w-full flex-col md:w-2/3 lg:w-1/2 xl:w-5/12">
             <div
                 v-for="(image, index) in displayedImages"
                 :key="index"
@@ -178,6 +178,18 @@ onMounted(() => {
                 ref="sentinel"
                 class="h-2 w-full opacity-0"
             />
+            <div class="flex justify-between p-4">
+                <UiButton :disabled="!episode?.previousEpisodeId">
+                    <NuxtLink :to="`/episode/${episode?.previousEpisodeId}`" class="flex items-center gap-2">
+                        <Icon name="iconoir:arrow-left" class="size-5" />
+                    </NuxtLink>
+                </UiButton>
+                <UiButton :disabled="!episode?.nextEpisodeId">
+                    <NuxtLink :to="`/episode/${episode?.nextEpisodeId}`" class="flex items-center gap-2">
+                        <Icon name="iconoir:arrow-right" class="size-5" />
+                    </NuxtLink>
+                </UiButton>
+            </div>
         </div>
     </div>
 </template>

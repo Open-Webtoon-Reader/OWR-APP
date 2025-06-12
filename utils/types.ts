@@ -21,6 +21,12 @@ export interface EpisodeWithProgression extends Episode{
     progression?: number;
 }
 
+export interface EpisodeData{
+    title: string;
+    previousEpisodeId: number;
+    nextEpisodeId: number;
+}
+
 export interface Progression{
     episodeId: string;
     progression: number;

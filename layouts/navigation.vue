@@ -41,6 +41,20 @@ function logout(){
         await navigateTo("/");
     }, 100);
 }
+
+function exitServer(){
+    serverUrl.value = "";
+    authToken.value = "";
+    useToast().toast({
+        title: "Exited server",
+        description: "You have exited the server",
+        variant: "default",
+        icon: "iconoir:check",
+    });
+    setTimeout(async() => {
+        await navigateTo("/server");
+    }, 100);
+}
 </script>
 
 <template>
@@ -93,7 +107,7 @@ function logout(){
                             </UiButton>
                             <UiButton v-if="user?.admin" variant="link" class="size-max" as-child @click="isDrawerOpen = false">
                                 <NuxtLink to="/admin" class="flex gap-2">
-                                    <Icon name="iconoir:apple-shortcuts" class="size-5"/>
+                                    <Icon name="iconoir:shield-check" class="size-5"/>
                                     Administration
                                 </NuxtLink>
                             </UiButton>
@@ -106,6 +120,10 @@ function logout(){
                             <UiButton v-if="user" variant="link" class="size-max" as-child @click="isDrawerOpen = false;logout()">
                                 <Icon name="iconoir:log-out" class="size-5"/>
                                 Logout
+                            </UiButton>
+                            <UiButton variant="link" class="size-max" as-child @click="isDrawerOpen = false;exitServer()">
+                                <Icon name="iconoir:database-xmark" class="size-5"/>
+                                Exit server
                             </UiButton>
                         </div>
                     </UiSheetContent>
@@ -143,9 +161,10 @@ function logout(){
                         <UiDropdownMenuLabel :label="user?.username || 'Guest'"/>
                         <UiDropdownMenuSeparator/>
                         <UiDropdownMenuItem v-if="!user" icon="iconoir:log-in" title="Login" @click="$router.push('/account/login')"/>
-                        <UiDropdownMenuItem v-if="user?.admin" icon="iconoir:apple-shortcuts" title="Administration" @click="$router.push('/admin')"/>
+                        <UiDropdownMenuItem v-if="user?.admin" icon="iconoir:shield-check" title="Administration" @click="$router.push('/admin')"/>
                         <UiDropdownMenuItem v-if="user" icon="iconoir:user" title="Account" @click="$router.push('/account')"/>
                         <UiDropdownMenuItem v-if="user" icon="iconoir:log-out" title="Logout" @click="logout"/>
+                        <UiDropdownMenuItem icon="iconoir:database-xmark" title="Exit server" @click="exitServer"/>
                     </UiDropdownMenuContent>
                 </UiDropdownMenu>
             </div>
