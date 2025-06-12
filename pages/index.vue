@@ -17,6 +17,8 @@ useHead({
     ],
 });
 
+const search = ref<string>("");
+
 const serverUrl = useLocalStorage("serverUrl", "");
 const {data: webtoons} = await useAsyncData<Webtoon[]>("webtoons", () => $fetch(`${serverUrl.value}/webtoons`), {
     server: false,
@@ -57,6 +59,45 @@ const sortedWebtoons = computed(() => {
     return sortedList;
 });
 
+const searchedWebtoons = computed(() => {
+    if (!sortedWebtoons.value || search.value.trim() === "")
+        return sortedWebtoons.value || [];
+
+    // Normalize
+    const searchTerms = search.value
+        .trim()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/]/g, "")
+        .toLowerCase()
+        .split(/\s+/)
+        .filter(term => term.length > 0);
+    if (searchTerms.length === 0)
+        return sortedWebtoons.value;
+
+    // Intelligent filtering
+    return sortedWebtoons.value.filter((webtoon: Webtoon) => {
+        const searchFields = [
+            webtoon.title,
+            webtoon.author,
+            ...webtoon.genres,
+        ];
+
+        const normalizedFields = searchFields
+            .filter(Boolean) // Filter empty fields
+            .map(field =>
+                field!
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f`~!@#$%^&*()_|+\-=?;:'",.<>{}[\]\\/]/g, "")
+                    .toLowerCase()
+            );
+
+        // Check if all search terms are included in any of the normalized fields
+        return searchTerms.every(term =>
+            normalizedFields.some(field => field.includes(term))
+        );
+    });
+});
+
 const isWebtoonLiked = computed(() => {
     if (!likes.value || !webtoons.value) return {};
     const likedWebtoons: any = {};
@@ -83,11 +124,17 @@ function likedStateChange(webtoonId: number, newState: boolean){
 </script>
 
 <template>
+    <div class="flex w-full justify-center gap-2 self-center border-x border-b p-2 md:w-[40rem] lg:w-[50rem]">
+        <UiInput v-model="search" placeholder="Search..."/>
+        <UiButton variant="destructive" size="icon" @click="search = ''">
+            <Icon name="iconoir:xmark" class="size-6"/>
+        </UiButton>
+    </div>
     <UiScrollArea class="h-dvh">
         <div class="flex flex-col">
             <div v-if="likes !== null" class="w-full justify-center self-center md:w-[40rem] lg:w-[50rem]">
                 <WebtoonItem
-                    v-for="webtoon in sortedWebtoons"
+                    v-for="webtoon in searchedWebtoons"
                     :key="webtoon.id"
                     :webtoon="webtoon"
                     :liked="isWebtoonLiked[webtoon.id] || false"
