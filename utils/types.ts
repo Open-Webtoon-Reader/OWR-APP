@@ -31,3 +31,11 @@ export interface Progression{
     episodeId: string;
     progression: number;
 }
+
+export interface User{
+    id: string;
+    username: string;
+    email: string;
+    avatar: string;
+    admin: boolean;
+}
