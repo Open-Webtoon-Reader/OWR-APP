@@ -1,6 +1,8 @@
 <template>
-    <VitePwaManifest/>
+    <NuxtLoadingIndicator/>
+    <NuxtRouteAnnouncer/>
     <NuxtLayout>
-        <NuxtPage />
+        <NuxtPage/>
+        <UiToastToaster/>
     </NuxtLayout>
 </template>

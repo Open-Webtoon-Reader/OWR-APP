@@ -1,145 +1,195 @@
 <script setup lang="ts">
-import * as apiurlMiddleware from "~/middleware/apiurl.middleware";
-import {getEpisodeImages, getEpisodeInfos} from "~/utils/api";
-import VisibilityObserver from "~/components/utils/VisibilityObserver.vue";
-import {useEpisode} from "~/utils/storage";
+import Image from "~/components/misc/Image.vue";
+import debounce from "debounce";
+import type {Progression} from "~/utils/types";
 
 definePageMeta({
+    layout: "navigation",
     middleware: [
-        apiurlMiddleware.default
+        "server-url-middleware",
     ],
-    layout: "free-nav-layout"
 });
 
-useSeoMeta({
-    title: "OWR",
-    description: "Episode page",
-});
+const id = useRoute().params.id;
+const serverUrl = useLocalStorage("serverUrl", "");
+const router = useRouter();
 
-const id = useRoute().params.id as any as number;
-const episodeStorage = useEpisode();
+const displayCount = ref(10);
+const sentinel = ref<HTMLElement | null>(null);
+let observer: IntersectionObserver;
+const imageRefs = ref<HTMLElement[]>([]);
 
-const isCancelled = ref(false);
-new Promise((resolve) => {
-    setTimeout(() => {
-        if (isCancelled.value) return;
-        episodeStorage.startEpisode(id);
-        resolve();
-    }, 2500);
-});
-onBeforeRouteLeave(() => {
-    isCancelled.value = true;
-});
+const {data: episode} = await useAsyncData<EpisodeData>(
+    `episode-${id}`,
+    () => $fetch(`${serverUrl.value}/webtoons/episodes/${id}`), {server: false});
 
-const episodeProgression = episodeStorage.getEpisodeProgression(id);
+const {data: images} = await useAsyncData<string[]>(
+    `episode-images-${id}`,
+    () => $fetch(`${serverUrl.value}/webtoons/episodes/${id}/images`), {server: false});
 
-const episodeImages = ref<string[]>([]);
-const episodeInfos = ref<any>({});
-const maxIndex = ref<number>(episodeProgression < 10 ? 10 : episodeProgression + 10);
-
-function increaseMaxIndex(){
-    maxIndex.value += 10;
-}
-
-async function loadEpisodeImages(){
-    const episodeState: any = useState(`episode-${id}`);
-    if (episodeState.value && episodeState.value.length){
-        episodeImages.value = episodeState.value;
-        setTimeout(() => {
-            scrollToImage();
-        }, 100);
-        return;
+const token = useCookie("token").value;
+const {data: currentProgression} = await useAsyncData<number>(`progression-${id}`, async() => {
+    if(!token) return 0;
+    try{
+        const progression = await $fetch<Progression>(`${serverUrl.value}/user/progression/episode/${id}`, {
+            headers: {Authorization: `Bearer ${token}`}
+        });
+        if(!progression)
+            return 0;
+        displayCount.value += progression.progression;
+        return progression.progression - 3 >= 0 ? progression.progression - 3 : 0; // -2 because we want to start from the first image
+    }catch{
+        return 0;
     }
-    const response = await getEpisodeImages(id);
-    episodeImages.value = response.data;
-    episodeState.value = episodeImages.value;
+}, {server: false});
 
-    setTimeout(() => {
-        scrollToImage();
-    }, 100);
-}
+const displayedImages = computed(() => {
+    return images.value?.slice(0, displayCount.value) || [];
+});
 
-function scrollToImage(){
-    const imageId = episodeImages.value[episodeProgression];
-    if(episodeProgression < 5) return;
-    const nuxtImg = document.getElementById(imageId);
-    if (nuxtImg)
-        nuxtImg.scrollIntoView({behavior: "smooth"});
-}
+const hasMore = computed(() => {
+    return images.value && displayCount.value < images.value.length;
+});
 
-async function loadEpisodeInfos(){
-    const episodeState: any = useState(`episode-infos-${id}`);
-    if (episodeState.value && episodeState.value.length){
-        episodeInfos.value = episodeState.value;
+async function saveProgressionAPI(progress: number){
+    if(progress <= 0)
         return;
-    }
-    const response = await getEpisodeInfos(id);
-    episodeInfos.value = response.data;
-    episodeState.value = episodeInfos.value;
-    useSeoMeta({
-        title: `OWR | ${episodeInfos.value.title}`,
-        description: "Episode page",
+    if(!token)
+        // TODO: Implement local storage saving
+        return;
+    await $fetch(`${serverUrl.value}/user/progression/episode/${id}`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`
+        },
+        body: {
+            progression: progress
+        }
     });
 }
 
-function updateProgression(index: number){
-    if(index > 5 && index > episodeProgression)
-        episodeStorage.setEpisodeProgression(id, index - 1);
+const debouncedSetProgression = debounce((progress: number) => {
+    saveProgressionAPI(progress);
+}, 250);
+
+let triggeredScroll = false;
+function tryTriggerScroll(){
+    if(!triggeredScroll
+        && currentProgression.value
+        && currentProgression.value !== 0
+        && imageRefs.value[currentProgression.value]
+    ){
+        triggerScroll(currentProgression.value);
+        triggeredScroll = true;
+    }
+}
+function triggerScroll(value: number){
+    setTimeout(() => {
+        imageRefs.value[value]?.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }, 100);
 }
 
-onMounted(async() => {
-    loadEpisodeImages();
-    loadEpisodeInfos();
+// Scroll to the current progression if it exists
+watch([currentProgression, imageRefs], ([newCurrentProgression]) => {
+    if(newCurrentProgression === 1)
+        triggeredScroll = true;
+    tryTriggerScroll();
+}, {immediate: true});
+
+onMounted(() => {
+    // Trigger scroll after 500ms to current progression if it exists
+    setTimeout(() => {
+        tryTriggerScroll();
+    }, 100);
+    // Progression observers
+    const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting){
+                const index = imageRefs.value.indexOf(entry.target as HTMLElement);
+                if(index > (currentProgression.value || 0)){
+                    currentProgression.value = index;
+                    debouncedSetProgression(index);
+                }
+            }
+        });
+    }, {root: document.querySelector(".flex-1"), threshold: 0.1});
+    imageRefs.value.forEach(el => el && imageObserver.observe(el));
+    watch(imageRefs, (newRefs) => {
+        newRefs.forEach(el => el && imageObserver.observe(el));
+    }, {deep: true});
+    onBeforeUnmount(() => {
+        imageObserver.disconnect();
+    });
+
+    // Sentinel observer
+    observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore.value){
+            displayCount.value += 10;
+        }
+    }, {
+        root: document.querySelector(".flex-1"),
+        rootMargin: "100px 0px"
+    });
+    watchEffect(() => {
+        if (sentinel.value && hasMore.value){
+            observer.observe(sentinel.value);
+        } else if (sentinel.value){
+            observer.unobserve(sentinel.value);
+        }
+    });
+    onBeforeUnmount(() => {
+        observer.disconnect();
+    });
 });
 </script>
 
 <template>
-    <div class="flex flex-col items-center w-full md:w-2/3 lg:w-1/2 xl:w-1/3">
-        <div id="header" class="flex border-[1px] border-t-0 w-full items-center justify-around px-8 gap-8 py-2">
-            <Button variant="secondary" :disabled="!episodeInfos.previousEpisodeId" @click="navigateTo(`/episode/${episodeInfos.previousEpisodeId}`, {replace: true})">
-                <Icon name="iconoir:arrow-left"/>
-            </Button>
-            <h3 class="m-2 grow text-center">{{ episodeInfos.title }}</h3>
-            <Button variant="secondary" :disabled="!episodeInfos.nextEpisodeId" @click="navigateTo(`/episode/${episodeInfos.nextEpisodeId}`, {replace: true})">
-                <Icon name="iconoir:arrow-right"/>
-            </Button>
+    <div class="flex w-full grow flex-col items-center">
+        <div class="flex w-full items-center justify-between p-4 shadow-md">
+            <NuxtLink class="flex items-center gap-2" @click="router.back">
+                <UiButton variant="ghost" size="icon">
+                    <Icon name="iconoir:arrow-left" />
+                </UiButton>
+                <h1 class="text-xl font-semibold">{{ episode?.title }}</h1>
+            </NuxtLink>
         </div>
-        <div v-for="(image, index) of episodeImages.slice(0, maxIndex)" :key="index" class="w-full">
-            <VisibilityObserver @on-display="updateProgression(index)">
-                <NuxtImg
-                    v-if="index < maxIndex - 1"
-                    :id="image"
-                    :src="sumToImageUrl(image)"
+        <div class="flex w-full flex-col md:w-2/3 lg:w-1/2 xl:w-5/12">
+            <div
+                v-for="(image, index) in displayedImages"
+                :key="index"
+                :ref="el => imageRefs[index] = el as HTMLElement"
+                class="w-full"
+            >
+                <Image
+                    :sum="image"
                     format="webp"
                     alt="Episode Image"
                     class="w-full"
-                    width="800"
-                    height="1280"
+                    :width="800"
+                    :height="1280"
+                    not-square
                 />
-                <VisibilityObserver v-else @on-display="increaseMaxIndex">
-                    <NuxtImg
-                        :id="image"
-                        :src="sumToImageUrl(image)"
-                        format="webp"
-                        alt="Episode Image"
-                        class="w-full"
-                        width="800"
-                        height="1280"
-                    />
-                </VisibilityObserver>
-            </VisibilityObserver>
-        </div>
-        <div id="footer" class="w-full flex flex-row justify-around py-4 px-8 gap-8 border-[1px]">
-            <Button variant="secondary" class="w-full" :disabled="!episodeInfos.previousEpisodeId" @click="navigateTo(`/episode/${episodeInfos.previousEpisodeId}`, {replace: true})">
-                <Icon name="iconoir:arrow-left"/>
-            </Button>
-            <Button variant="secondary" class="w-full" :disabled="!episodeInfos.nextEpisodeId" @click="navigateTo(`/episode/${episodeInfos.nextEpisodeId}`, {replace: true})">
-                <Icon name="iconoir:arrow-right"/>
-            </Button>
+            </div>
+            <div
+                v-show="hasMore"
+                ref="sentinel"
+                class="h-2 w-full opacity-0"
+            />
+            <div class="flex justify-between p-4">
+                <UiButton :disabled="!episode?.previousEpisodeId">
+                    <NuxtLink :to="`/episode/${episode?.previousEpisodeId}`" class="flex items-center gap-2">
+                        <Icon name="iconoir:arrow-left" class="size-5" />
+                    </NuxtLink>
+                </UiButton>
+                <UiButton :disabled="!episode?.nextEpisodeId">
+                    <NuxtLink :to="`/episode/${episode?.nextEpisodeId}`" class="flex items-center gap-2">
+                        <Icon name="iconoir:arrow-right" class="size-5" />
+                    </NuxtLink>
+                </UiButton>
+            </div>
         </div>
     </div>
 </template>
-
-<style scoped>
-
-</style>

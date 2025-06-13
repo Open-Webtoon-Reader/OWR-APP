@@ -1,11 +1,8 @@
-<script setup lang="ts">
-
-import {Toaster} from "~/components/ui/toast";
-</script>
+<script setup lang="ts"></script>
 
 <template>
-    <div>
-        <Toaster/>
+    <div class="flex h-dvh max-h-dvh min-h-dvh w-full flex-col">
+        <UiToastToaster/>
         <slot/>
     </div>
 </template>
