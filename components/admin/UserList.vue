@@ -1,28 +1,62 @@
 <script setup lang="ts">
 
 import type {User} from "~/utils/types";
+import CreateUserDialog from "~/components/dialogs/CreateUserDialog.vue";
+import ConfirmDialog from "~/components/dialogs/ConfirmDialog.vue";
 
 const serverUrl = useLocalStorage("serverUrl", "");
-const {data: users} = await useAsyncData<User[]>(
+const authToken = useCookie("token");
+const {data: users, refresh: refreshUsers} = await useAsyncData<User[]>(
     "users",
     () => $fetch(`${serverUrl.value}/admin/users`, {
-        headers: {Authorization: `Bearer ${useCookie("token").value}`}
+        headers: {Authorization: `Bearer ${authToken.value}`}
     }), {server: false}
 );
 const {data: user} = await useAsyncData<any>("user", () => $fetch(`${serverUrl.value}/user/me`, {
     headers: {
-        Authorization: `Bearer ${useCookie("token").value}`,
+        "Authorization": `Bearer ${authToken.value}`,
     }
 }), {
     server: false,
 });
 
-async function addUser(){
-    // TODO
+const isCreateUserDialogOpen = ref(false);
+
+async function createUser(userData: {username: string, email: string, password: string}){
+    try{
+        await $fetch(`${serverUrl.value}/admin/users/new`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${authToken.value}`,
+            },
+            body: userData,
+        });
+        await refreshUsers();
+    }catch(e: any){
+        useToast().toast({
+            title: "Error",
+            description: e.data.message,
+            variant: "destructive",
+        });
+    }
 }
 
 async function deleteUser(userId: string){
-    // TODO
+    try{
+        await $fetch(`${serverUrl.value}/admin/users/${userId}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${authToken.value}`,
+            },
+        });
+        await refreshUsers();
+    }catch(e: any){
+        useToast().toast({
+            title: "Error",
+            description: e.data.message,
+            variant: "destructive",
+        });
+    }
 }
 
 async function editUserPassword(userId: string){
@@ -32,9 +66,9 @@ async function editUserPassword(userId: string){
 
 <template>
     <div class="flex flex-col">
-        <div class="flex justify-between p-2">
+        <div class="flex items-center justify-between p-2">
             <h2 class="border-b-0">User list</h2>
-            <UiButton>
+            <UiButton @click="isCreateUserDialogOpen = true">
                 <Icon name="iconoir:plus" class="size-4" />
                 Add User
             </UiButton>
@@ -52,23 +86,30 @@ async function editUserPassword(userId: string){
                 </thead>
                 <tbody class="">
                     <tr v-for="remoteUser in users" :key="remoteUser.id">
-                        <td class="">{{ remoteUser.id }}</td>
-                        <td class="">{{ remoteUser.username }}</td>
-                        <td class="">{{ remoteUser.email }}</td>
-                        <td class="">{{ remoteUser.admin ? "Admin" : "User" }}</td>
-                        <td class="flex items-center justify-center gap-2 !p-2">
-                            <UiButton :disabled="user.id === remoteUser.id" variant="secondary">
-                                <Icon name="iconoir:edit" class="size-4" />
-                            </UiButton>
-                            <UiButton variant="destructive" :disabled="user.id === remoteUser.id">
-                                <Icon name="iconoir:trash" class="size-4" />
-                            </UiButton>
+                        <td class=""><p>{{ remoteUser.id }}</p></td>
+                        <td class=""><p>{{ remoteUser.username }}</p></td>
+                        <td class=""><p>{{ remoteUser.email }}</p></td>
+                        <td class=""><p>{{ remoteUser.admin ? "Admin" : "User" }}</p></td>
+                        <td>
+                            <div class="flex items-center justify-center gap-2 !p-2">
+                                <UiButton :disabled="user.id === remoteUser.id || true" variant="secondary">
+                                    <Icon name="iconoir:edit" class="size-4" />
+                                </UiButton>
+                                <ConfirmDialog :title="`Do you really want to delete user ${remoteUser.username} ?`" @action="deleteUser(remoteUser.id)">
+                                    <template #trigger>
+                                        <UiButton variant="destructive" :disabled="user.id === remoteUser.id">
+                                            <Icon name="iconoir:trash" class="size-4" />
+                                        </UiButton>
+                                    </template>
+                                </ConfirmDialog>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+    <CreateUserDialog v-model:open="isCreateUserDialogOpen" @create-user="createUser"/>
 </template>
 
 <style scoped>
